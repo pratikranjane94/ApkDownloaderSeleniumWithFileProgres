@@ -34,9 +34,9 @@ public class OauthGenerator {
 		return secretKey;
 	}
 
-	public byte[] accessToken(byte[] secretKey, SignUp signUp) throws NoSuchAlgorithmException, NoSuchPaddingException,
+	public byte[] accessToken(SignUp signUp) throws NoSuchAlgorithmException, NoSuchPaddingException,
 			InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-		secretKeySpec = new SecretKeySpec(secretKey, "AES");
+		secretKeySpec = new SecretKeySpec(signUp.getSecretKey(), "AES");
 		Cipher cipher = Cipher.getInstance("AES");
 		cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
 

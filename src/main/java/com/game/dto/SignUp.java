@@ -20,8 +20,10 @@ public class SignUp {
 	private String emailId;
 	@Column
 	private String Password;
-	private String secretKey;
-	private String accessToken;
+	@Column
+	private byte[] secretKey;
+	@Column
+	private byte[] accessToken;
 
 	public int getId() {
 		return id;
@@ -63,21 +65,23 @@ public class SignUp {
 		Password = password;
 	}
 
-	public String getSecretKey() {
+	public byte[] getSecretKey() {
 		return secretKey;
 	}
 
-	public void setSecretKey(String secretKey) {
+	public void setSecretKey(byte[] secretKey) {
 		this.secretKey = secretKey;
 	}
 
-	public String getAccessToken() {
+	public byte[] getAccessToken() {
 		return accessToken;
 	}
 
-	public void setAccessToken(String accessToken) {
+	public void setAccessToken(byte[] accessToken) {
 		this.accessToken = accessToken;
 	}
+
+	
 
 	
 

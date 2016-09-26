@@ -43,16 +43,16 @@ public class ApkDownloadSelenium {
 
 		String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL, "t");
 		driver.findElement(By.id("inp-gsf-id")).sendKeys(selectLinkOpeninNewTab);
-		ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
-	    driver.switchTo().window(tabs.get(1)); //switches to new tab
-	    driver.get(playStoreUrl);
+		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+		driver.switchTo().window(tabs.get(1)); // switches to new tab
+		driver.get(playStoreUrl);
 
 		// clicking download button
 		driver.findElement(By.cssSelector("span.large.play-button.download-apk-button.apps button")).click();
 		// Maximize the window.
 		driver.manage().window().maximize();
 		System.out.println("Download Complete");
-		
+
 		driver.close();
 	}
 

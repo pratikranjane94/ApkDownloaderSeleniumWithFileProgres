@@ -4,7 +4,6 @@ com/game/dto/SignUp.class
 com/game/dao/UserDaoImp.class
 com/game/model/PlayStoreUrlFetching.class
 com/game/dto/JsoupData.class
-com/game/model/Token.class
 com/game/model/GameNotFound.class
 com/game/dto/Count.class
 com/game/model/OauthGenerator.class

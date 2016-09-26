@@ -138,7 +138,7 @@ public class PlayStoreDataFetching {
 				bw.newLine();
 			}
 
-			if(playStoreDetails.isEmpty())
+			if(playStoreDetails.equals(null) || playStoreDetails.equals(""))
 			{
 				bw.append("null^null^null^null^null^null^");
 				bw.close();

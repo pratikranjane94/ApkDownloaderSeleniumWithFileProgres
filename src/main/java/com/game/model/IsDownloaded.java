@@ -12,18 +12,21 @@ import java.util.ArrayList;
 
 public class IsDownloaded {
 
-	/*checks file is download or not
-	 *logic:incomplete download file contains extension .crxdownload. if filename in directory/folder not end with .apk
-	 *returns false, else file download is completed and will return true with actual file name
-	*/
+	/*
+	 * checks game is download or not logic:incomplete download file contains
+	 * extension .crxdownload. if filename in directory/folder not end with .apk
+	 * returns false, else file download is completed and will return true with
+	 * actual file name
+	 */
 	public ArrayList<String> isFileDownloaded(String fileName) {
 		String flag = "false";
 		ArrayList<String> info = new ArrayList<>();
+
 		File dir = new File("/home/bridgelabz6/Downloads/apk-downloader/");
 		File[] dir_contents = dir.listFiles();
 
 		for (int i = 0; i < dir_contents.length; i++) {
-			System.out.println(fileName+" is downloading");
+			//System.out.println(fileName + " is downloading");
 			try {
 				if (dir_contents[i].getName().contains(fileName) && dir_contents[i].getName().endsWith(".apk")) {
 					flag = "true";
@@ -40,13 +43,12 @@ public class IsDownloaded {
 		return info;
 	}
 
+	// reads the game name from file and checks whether it is download or not
 	public void downloadCompleted(String fileName, int totoalGames) throws IOException, InterruptedException {
 		FileReader st1 = new FileReader("/home/bridgelabz6/Pictures/files/" + fileName);
 		BufferedReader st2 = new BufferedReader(st1);
 
 		String folderName = fileName.replaceAll(".csv", "");
-
-		IsDownloaded downloaded = new IsDownloaded();
 
 		System.out.println("File Name:" + fileName + "\nTotal No:" + totoalGames);
 
@@ -57,20 +59,18 @@ public class IsDownloaded {
 		if (dowFileName == null) {
 			System.out.println("file is empty");
 		} else {
-			//dowFileName = st2.readLine();
-
 			for (progress = 0; progress < totoalGames; progress++) {
 				dowFileName = st2.readLine();
 				String[] gname = dowFileName.split("\\^");
 				try {
 					dowFileName = gname[5];
+					System.out.println("Game name:"+dowFileName);
 				} catch (Exception e) {
 					System.out.println("error");
 				}
-				System.out.println("Game name:" + dowFileName);
 
 				ArrayList<String> data = new ArrayList<>();
-				data = downloaded.isFileDownloaded(dowFileName);
+				data = isFileDownloaded(dowFileName);
 
 				if (data.get(1).equals("true")) {
 					String movePath = "/home/bridgelabz6/Downloads/apk-downloader/";
@@ -82,18 +82,16 @@ public class IsDownloaded {
 					targetPath = targetPath.concat(data.get(0));
 					Path movefrom = FileSystems.getDefault().getPath(movePath);
 					Path target = FileSystems.getDefault().getPath(targetPath);
-					
+
 					Files.move(movefrom, target, StandardCopyOption.REPLACE_EXISTING);
 					System.out.println(dowFileName + " is downloaded");
-				}
-
-				else {
+				} else {
 					data = isFileDownloaded(dowFileName);
 					while (data.get(1) != "true") {
 						Thread.sleep(1000);
-						// downloaded.isFileDownloaded(dowFileName);
 						data = isFileDownloaded(dowFileName);
 					}
+					System.out.println(dowFileName + " is downloded");
 					String movePath = "/home/bridgelabz6/Downloads/apk-downloader/";
 					String targetPath = "/home/bridgelabz6/Downloads/apk-downloader/" + folderName + "/";
 
@@ -108,7 +106,7 @@ public class IsDownloaded {
 					Path target = FileSystems.getDefault().getPath(targetPath);
 					Files.move(movefrom, target, StandardCopyOption.REPLACE_EXISTING);
 					dowFileName = st2.readLine();
-					System.out.println(dowFileName + " is downloded");
+					
 
 				} // end of inner for else
 

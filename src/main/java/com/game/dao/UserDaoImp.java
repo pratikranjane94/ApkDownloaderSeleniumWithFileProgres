@@ -31,8 +31,8 @@ public class UserDaoImp implements UserDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public String getAccessToken(String userName, String password) {
-		String accessToken=null;
+	public byte[] getAccessToken(String userName, String password) {
+		byte[] accessToken=null;
 		session = sessionFactory.openSession();
 		System.out.println("username and password:"+userName+" "+password);
 		Query query = session.createQuery("from SignUp where userName=:userName and password=:password");

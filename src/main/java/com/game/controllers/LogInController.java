@@ -46,66 +46,70 @@ public class LogInController {
 		System.out.println("username:" + signUp.getUserName());
 
 		// setting secret key
-		byte[] secretKey = (signUp.getUserName() + signUp.getPassword()).getBytes("UTF-8");
-		signUp.setSecretKey(secretKey.toString());
+		// byte[] secretKey = (signUp.getUserName() +
+		// signUp.getPassword()).getBytes("UTF-8");
 
-		Oauth oauth = new Oauth();
-		String accessToken = oauth.getAccesToken(signUp);
+		byte[] secretKey = oauthGenerator.oAuthKeyCreator(signUp);
+
+		signUp.setSecretKey(secretKey);
+
+		byte[] accessToken = oauthGenerator.accessToken(signUp);
 
 		// setting access token
-		signUp.setAccessToken(accessToken.toString());
+		signUp.setAccessToken(accessToken);
 
 		userDaoImp.signup(signUp);
 		return "login";
 	}
 
-	/*
-	 * @RequestMapping(value = "/login", method = RequestMethod.POST)
-	 * public @ResponseBody String login(@ModelAttribute("login") SignUp signUp)
-	 * throws UnsupportedEncodingException, NoSuchAlgorithmException,
-	 * InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException,
-	 * BadPaddingException {
-	 * 
-	 * System.out.println("login password:" + signUp.getPassword());
-	 * 
-	 * //getting access token of logged in user byte[] secretKey =
-	 * oauthGenerator.oAuthKeyCreator(signUp); byte[] accessToken =
-	 * oauthGenerator.accessToken(secretKey, signUp);
-	 * 
-	 * //getting access token of same user in database byte[]
-	 * xyz=userDaoImp.getAccessToken(signUp.getUserName(),
-	 * signUp.getPassword());
-	 * 
-	 * System.out.println("login access token:"+accessToken.toString()+
-	 * "/n database access token:"+xyz.toString());
-	 * 
-	 * ArrayList<String> a=oauthGenerator.authenticateUser(accessToken);
-	 * ArrayList<String> b=oauthGenerator.authenticateUser(xyz);
-	 * 
-	 * System.out.println("details1:"+a+" \nDetails2:"+b );
-	 * 
-	 * if (a.get(1).equals(b.get(1)) && (a.get(2).equals(b.get(2)))) {
-	 * System.out.println("success"); return "success"; } else return "error"; }
-	 */
-
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public @ResponseBody String login(@ModelAttribute("login") SignUp signUp)
-			throws FileNotFoundException, ClassNotFoundException, IOException {
+			throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException,
+			IllegalBlockSizeException, BadPaddingException {
 
-		Oauth oauth = new Oauth();
-		byte[] secretKey = (signUp.getUserName() + signUp.getPassword()).getBytes("UTF-8");
-		// oauth.generateKey();
-		signUp.setSecretKey(secretKey.toString());
+		System.out.println("login password:" + signUp.getPassword());
 
-		System.out.println("login");
-		System.out.println("login username and password:" + signUp.getPassword() + signUp.getPassword());
+		// getting access token of logged in user
+		byte[] secretKey = oauthGenerator.oAuthKeyCreator(signUp);
+		signUp.setSecretKey(secretKey);
 
-		String accessToken = oauth.getAccesToken(signUp);
+		byte[] accessToken = oauthGenerator.accessToken(signUp);
 
-		if (oauth.authorisedUser(signUp))
+		// getting access token of same user in database
+		byte[] xyz = userDaoImp.getAccessToken(signUp.getUserName(), signUp.getPassword());
+
+		System.out
+				.println("login access token:" + accessToken.toString() + "/n database access token:" + xyz.toString());
+
+		ArrayList<String> a = oauthGenerator.authenticateUser(accessToken);
+		ArrayList<String> b = oauthGenerator.authenticateUser(xyz);
+
+		System.out.println("details1:" + a + " \nDetails2:" + b);
+
+		if (a.get(1).equals(b.get(1)) && (a.get(2).equals(b.get(2)))) {
+			System.out.println("success");
 			return "success";
-		else
+		} else
 			return "error";
 	}
+
+	/*
+	  @RequestMapping(value = "/login", method = RequestMethod.POST)
+	  public @ResponseBody String login(@ModelAttribute("login") SignUp signUp)
+	  throws FileNotFoundException, ClassNotFoundException, IOException {
+	  
+	  Oauth oauth = new Oauth(); byte[] secretKey = (signUp.getUserName() +
+	  signUp.getPassword()).getBytes("UTF-8"); // oauth.generateKey();
+	  signUp.setSecretKey(secretKey.toString());
+	  
+	  System.out.println("login"); System.out.println(
+	  "login username and password:" + signUp.getPassword() +
+	  signUp.getPassword());
+	  
+	  String accessToken = oauth.getAccesToken(signUp);
+	  
+	  if (oauth.authorisedUser(signUp)) return "success"; else return "error";
+	  }
+	 */
 
 }

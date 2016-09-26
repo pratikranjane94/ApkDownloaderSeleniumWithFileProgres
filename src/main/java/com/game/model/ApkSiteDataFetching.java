@@ -148,7 +148,7 @@ public class ApkSiteDataFetching {
 				bw.newLine();
 				bw.append("null null^null^null^null^null null^null^");
 			}
-			if(apkSiteDetails.isEmpty()){
+			if(apkSiteDetails.equals(null) || apkSiteDetails.equals("")){
 				bw.append("null^null^null^null^null^null^");
 			}else{
 				bw.append(title);

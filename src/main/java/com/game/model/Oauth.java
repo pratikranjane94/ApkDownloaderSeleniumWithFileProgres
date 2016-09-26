@@ -25,6 +25,7 @@ public class Oauth {
 	public String getAccesToken(SignUp signUp) throws FileNotFoundException, IOException, ClassNotFoundException {
 
 		// SECRET_KEY=signUp.getSecretKey();
+		
 		String originalText = signUp.getUserName() + " " + signUp.getPassword();
 
 		// Encrypt the string using the public key
@@ -77,7 +78,7 @@ public class Oauth {
 		UserDaoImp userDaoImp = new UserDaoImp();
 
 		String accessToken = oauth.getAccesToken(signUp);
-		String dbAccessToken = userDaoImp.getAccessToken(signUp.getUserName(), signUp.getPassword());
+		byte[] dbAccessToken = userDaoImp.getAccessToken(signUp.getUserName(), signUp.getPassword());
 
 		if (accessToken.equals(dbAccessToken))
 			return true;
