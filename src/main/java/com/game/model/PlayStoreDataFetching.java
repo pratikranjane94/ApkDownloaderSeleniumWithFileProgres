@@ -81,6 +81,7 @@ public class PlayStoreDataFetching {
 				playStoreDetails.add(version);
 				playStoreDetails.add(pDate);
 				playStoreDetails.add(pack);
+				playStoreDetails.add(url);
 				
 				System.out.println("----------Play Store Data--------------");
 				
@@ -91,6 +92,7 @@ public class PlayStoreDataFetching {
 				System.out.println("File Size: " + size);
 				System.out.println("Update date: " + pDate);
 				System.out.println("Package Name:" + pack);
+				System.out.println("URL:"+url);
 			}
 
 		} catch (UnknownHostException u) {
@@ -120,6 +122,7 @@ public class PlayStoreDataFetching {
 		String version = playStoreDetails.get(3);
 		String pDate = playStoreDetails.get(4);
 		String pack = playStoreDetails.get(5);
+		String url = playStoreDetails.get(6);
 		boolean notFound=false;
 		try {
 			File file = new File("/home/bridgelabz6/Pictures/files/"+downloadFileName); //adding data to CSV
@@ -133,7 +136,7 @@ public class PlayStoreDataFetching {
 			// if file doesn't exists, then create it
 			if (notFound) {
 				file.createNewFile();
-				bw.append("PlayStore Title^Genre^Size^Version^Publish Date^Package^");
+				bw.append("PlayStore Title^Genre^Size^Version^Publish Date^Package^Url^");
 				bw.append("Apk Title^Genre^Size^Version^Publish Date^Download Link^");
 				bw.newLine();
 			}
@@ -156,6 +159,8 @@ public class PlayStoreDataFetching {
 			bw.append(pDate);
 			bw.append("^");
 			bw.append(pack);
+			bw.append("^");
+			bw.append(url);
 			bw.append("^");
 			bw.close();
 			}

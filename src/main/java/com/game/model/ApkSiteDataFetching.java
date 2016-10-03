@@ -143,10 +143,9 @@ public class ApkSiteDataFetching {
 			// if file doesn't exists, then create it
 			if (notFound) {
 				file.createNewFile();
-				bw.append("PlayStore Title^Genre^Size^Version^Publish Date^Package^");
+				bw.append("PlayStore Title^Genre^Size^Version^Publish Date^Package^Url^");
 				bw.append("Apk Title^Genre^Size^Version^Publish Date^Download Link^");
 				bw.newLine();
-				bw.append("null null^null^null^null^null null^null^");
 			}
 			if(apkSiteDetails.equals(null) || apkSiteDetails.equals("")){
 				bw.append("null^null^null^null^null^null^");

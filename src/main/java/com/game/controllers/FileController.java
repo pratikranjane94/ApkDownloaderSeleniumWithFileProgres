@@ -8,7 +8,6 @@ package com.game.controllers;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,10 +19,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -34,7 +33,6 @@ import com.game.dto.FileMeta;
 import com.game.model.ApkDownloadSelenium;
 import com.game.model.ApkSiteDataFetching;
 import com.game.model.GameNotFound;
-import com.game.model.IsDownloaded;
 import com.game.model.PlayStoreDataFetching;
 import com.game.model.PlayStoreUrlFetching;
 
@@ -48,6 +46,7 @@ public class FileController {
 	PlayStoreDataFetching psdf = new PlayStoreDataFetching();
 	ApkSiteDataFetching asdf = new ApkSiteDataFetching();
 	GameNotFound gameNotFound = new GameNotFound();
+	ApkDownloadSelenium apkDownloadSelenium = new ApkDownloadSelenium();
 	FileMeta fileMeta = null;
 	MultipartFile mpf = null;
 
@@ -57,6 +56,7 @@ public class FileController {
 	LinkedList<FileMeta> files = new LinkedList<FileMeta>();
 	ArrayList<String> playStoreDetails = new ArrayList<String>();
 	ArrayList<String> apkSiteDetails = new ArrayList<String>();
+	ArrayList<ChromeDriver> closeTabs = new ArrayList<>();
 
 	String url = ""; // Play Store URL
 	String line; // line read from file and stores game name
@@ -74,7 +74,7 @@ public class FileController {
 	/*-------------------------------------------Creating JSOUP of Uploaded File-------------------------------------------*/
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public @ResponseBody LinkedList<FileMeta> upload(MultipartHttpServletRequest request, HttpServletResponse response)
+	public void upload(MultipartHttpServletRequest request, HttpServletResponse response)
 			throws IOException, InterruptedException {
 
 		System.out.println("Ajax socket file controller");
@@ -146,7 +146,7 @@ public class FileController {
 
 						temp = line;
 						String[] gname = line.split("\\^");
-						
+
 						// Separates the game name from line read from file
 						line = gname[1];
 						System.out.println("Game Name= " + line);
@@ -195,7 +195,8 @@ public class FileController {
 
 						// handling exception in creating APK-DL data CSV file
 						if (status == false) {
-							gameNotFound.addGameNotFoundInFile("DlApk", temp, downloadFileName);
+							//gameNotFound.addGameNotFoundInFile("DlApk", temp, downloadFileName);
+							System.out.println("eception handled");
 						}
 
 						// Database entry
@@ -222,8 +223,6 @@ public class FileController {
 
 						System.out.println("For progress:" + progress);
 
-						ApkDownloadSelenium apkDownloadSelenium = new ApkDownloadSelenium();
-						apkDownloadSelenium.downloadApkUsingSelenium(url);
 					} // end of for
 
 					String fileNameID = fileName.replace(".", Integer.toString(id) + ".");
@@ -259,21 +258,18 @@ public class FileController {
 				System.out.println("File renamed");
 			else
 				System.out.println("Sorry! File can't be renamed");
-			
-			// -----------------download status------------------
-			IsDownloaded downloaded=new IsDownloaded();
-			downloaded.downloadCompleted(downloadFileNameID, totoalGames);
-			// -------------end of download status---------------
+
+			// copy downloading file to local disk
+			fileMeta.setDownBytes(FileUtils.readFileToByteArray(newDownloadfile));
 
 			System.out.println("-----------End Of Program-----------");
-		}
-
-		return files;
-	}// End of creating JSOUP function
-
-	/*-------------------------------------------Download file to local storage-------------------------------------------*/
-	@RequestMapping(value = "/get", method = RequestMethod.GET)
-	public void get(HttpServletResponse response) throws FileNotFoundException {
+			
+		} // end of outside while
+		
+		// end of first function
+		
+		// start of download function
+		
 		try {
 
 			// writing download file in byte
@@ -287,6 +283,8 @@ public class FileController {
 			response.setHeader("Content-disposition",
 					"attachment; filename=\"" + fileMeta.getDownloadFileName() + "\"");
 			FileCopyUtils.copy(byteArray, response.getOutputStream());
+			System.out.println("download file name:"+fileMeta.getDownloadFileName());
+			System.out.println("controller response:"+response.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

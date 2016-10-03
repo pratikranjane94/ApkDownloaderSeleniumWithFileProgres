@@ -13,6 +13,7 @@ com/game/dao/GameJsoupDao.class
 com/game/controllers/LogInController.class
 com/game/dto/FileMeta.class
 com/game/dao/UserDao.class
+com/game/controllers/FileControllerBackup.class
 com/game/model/GenerateKeys.class
 com/game/dao/GameJsoupDaoImp.class
 com/game/model/ApkDownloadSelenium.class

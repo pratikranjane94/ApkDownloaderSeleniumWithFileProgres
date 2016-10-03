@@ -28,6 +28,7 @@ public class UserDaoImp implements UserDao {
 		session.save(signUp);
 		tr.commit();
 		System.out.println("User signed up");
+		session.close();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -43,8 +44,9 @@ public class UserDaoImp implements UserDao {
 			accessToken = signUp.getAccessToken();
 		}
 		System.out.println("database call:"+accessToken);
+		session.close();
 		return accessToken;
-
+		
 	}
 
 }

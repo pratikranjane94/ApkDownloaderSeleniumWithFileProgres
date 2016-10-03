@@ -46,6 +46,7 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 		count.setVersion(playStoreDetails.get(3));
 		count.setPublishDate(playStoreDetails.get(4));
 		count.setPackageName(playStoreDetails.get(5));
+		count.setUrl(playStoreDetails.get(6));
 		if (apkSiteDetails != null) {
 			try {
 				count.setDlTitle(apkSiteDetails.get(0));
@@ -61,6 +62,7 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 		// Storing data into database
 		session.save(count);
 		tr.commit();
+		session.close();
 		System.out.println("Jsoup data stored in database");
 	}
 
@@ -74,7 +76,7 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 		List list = query.list();
 		
 		System.out.println("Is empty:" + list.size());
-		
+		session.close();
 		if (list.size() <= 0)
 			return true;
 		else
@@ -96,7 +98,7 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 		for (int i = 0; i < list.size(); i++) {
 			count = (Count) list.get(i);
 		}
-
+		session.close();
 		lastFileName = count.getFileName();
 		System.out.println("last file Name:" + lastFileName);
 		return lastFileName;
@@ -121,6 +123,7 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 
 		id = count.getId();
 		System.out.println("Last id(db):" + id);
+		session.close();
 		return id;
 	}
 
@@ -143,6 +146,7 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 
 		id = count.getId();
 		System.out.println("last id in database regardless of filename:" + id);
+		session.close();
 		return id;
 	}
 
@@ -168,7 +172,7 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 			}
 			// getting last progress
 			progress = count.getNo();
-
+			session.close();
 			System.out.println("total Progress(db):" + progress);
 			return progress;
 		}
@@ -181,7 +185,7 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 		update.setString("filename", fileName);
 		update.setInteger("id", id);
 		update.executeUpdate();
-		
+		session.close();
 		System.out.println("Updated");
 	}
 }
