@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -178,16 +177,5 @@ public class ApkSiteDataFetching {
 		}
 		return true;
 	}
-	/*
-	 * public String getDownloadLink(ArrayList<String> apkSiteDetails) { String
-	 * url=""; String downLink; try { downLink=apkSiteDetails.get(5); Document
-	 * doc1 =
-	 * Jsoup.connect(downLink).userAgent("Chrome/47.0.2526.80").timeout(10000).
-	 * get();
-	 * 
-	 * url=doc1.getElementsByTag("p").select("a[href]").attr("href"); //
-	 * System.out.println("url:"+url); } catch(Exception e) {
-	 * e.printStackTrace(); } return url; }
-	 */
 
 }

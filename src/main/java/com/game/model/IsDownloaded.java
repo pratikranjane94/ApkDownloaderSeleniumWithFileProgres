@@ -16,7 +16,19 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
+import com.game.dto.JsonInfo;
+
 public class IsDownloaded {
+
+	private JsonInfo jsonInfo;
+
+	public JsonInfo getJsonInfo() {
+		return jsonInfo;
+	}
+
+	public void setJsonInfo(JsonInfo jsonInfo) {
+		this.jsonInfo = jsonInfo;
+	}
 
 	/*
 	 * checks game is download or not logic:incomplete download file contains
@@ -50,8 +62,10 @@ public class IsDownloaded {
 	}
 
 	// reads the game name from file and checks whether it is download or not
-	public void isDownloadCompleted(String fileName, int last) throws IOException, InterruptedException {
-		FileReader st1 = new FileReader("/home/bridgelabz6/Pictures/files/" + fileName);
+	public void isDownloadCompleted(String downloadFilePath, String fileName, int last)
+			throws IOException, InterruptedException {
+		System.out.println("file path:" + downloadFilePath);
+		FileReader st1 = new FileReader(downloadFilePath + fileName);
 		BufferedReader st2 = new BufferedReader(st1);
 		ArrayList<String> data = new ArrayList<>();
 
@@ -67,18 +81,16 @@ public class IsDownloaded {
 			loop = last / 5;
 
 			loop = loop * 5;
+		} else {
+			loop = last % 5;
+			loop = loop * 5;
 		}
-		else{
-			loop=last % 5;
-			loop=loop*5;
-		}
-		if (loop % 5==0 && loop!=0)
+		if (loop % 5 == 0 && loop != 0)
 			loop = loop + 1;
 
-		
 		System.out.println("Loop till:" + loop);
 
-		for (int j = 0; j < loop-1; j++) {
+		for (int j = 0; j < loop - 1; j++) {
 			st2.readLine();
 		}
 
@@ -93,7 +105,7 @@ public class IsDownloaded {
 
 					String[] gname = dowFileName.split("\\^");
 					dowFileName = gname[5];
-					if(dowFileName.equals(null))
+					if (dowFileName.equals(null))
 						break;
 					System.out.println("Game name:" + dowFileName);
 				} catch (Exception e) {
@@ -107,8 +119,8 @@ public class IsDownloaded {
 				data = isFileDownloaded(dowFileName);
 
 				if (data.get(1).equals("true")) {
-					String movePath = "/home/bridgelabz6/Downloads/apk-downloader/";
-					String targetPath = "/home/bridgelabz6/Downloads/apk-downloader/" + folderName + "/";
+					String movePath = jsonInfo.getApkFileDownloadFolder();
+					String targetPath = movePath + folderName + "/";
 
 					File file = new File(targetPath);
 					if (!file.exists())
@@ -134,8 +146,8 @@ public class IsDownloaded {
 					}
 					System.out.println(dowFileName + " is downloded");
 
-					String movePath = "/home/bridgelabz6/Downloads/apk-downloader/";
-					String targetPath = "/home/bridgelabz6/Downloads/apk-downloader/" + folderName + "/";
+					String movePath = jsonInfo.getApkFileDownloadFolder();
+					String targetPath = movePath + folderName + "/";
 
 					File file = new File(targetPath);
 					if (!file.exists())
@@ -166,12 +178,6 @@ public class IsDownloaded {
 			st2.close();
 			System.out.println("completed for loop");
 		}
-		System.out.println("completed download checking process");
-		/*
-		 * ApkDownloadSelenium apkDownloadSelenium = new ApkDownloadSelenium();
-		 * for (ChromeDriver driver : drivers) {
-		 * apkDownloadSelenium.closeTabs(driver); }
-		 */
 
 	}
 	/*

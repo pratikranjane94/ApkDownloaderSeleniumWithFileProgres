@@ -23,7 +23,19 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import com.game.dto.JsonInfo;
+
 public class ApkDownloadSelenium {
+
+	private JsonInfo jsonInfo;
+
+	public JsonInfo getJsonInfo() {
+		return jsonInfo;
+	}
+
+	public void setJsonInfo(JsonInfo jsonInfo) {
+		this.jsonInfo = jsonInfo;
+	}
 
 	public ChromeDriver downloadApkUsingSelenium(String playStoreUrl)
 			throws InterruptedException, IOException, ParseException {
@@ -39,7 +51,7 @@ public class ApkDownloadSelenium {
 
 		try {
 
-			Object obj = parser.parse(new FileReader("/home/bridgelabz6/Music/info.json"));
+			Object obj = parser.parse(new FileReader(jsonInfo.getCredentialsPath()));
 
 			JSONObject jsonObject = (JSONObject) obj;
 
@@ -59,12 +71,12 @@ public class ApkDownloadSelenium {
 			// login URL
 			String chromeUrl = "chrome-extension://bifidglkmlbfohchohkkpdkjokajibgg/login.html";
 
-			System.setProperty("webdriver.chrome.driver", "/home/bridgelabz6/Downloads/chromedriver");
+			System.setProperty("webdriver.chrome.driver", jsonInfo.getChromeDriverPath());
 
 			ChromeOptions options = new ChromeOptions();
 
 			// adding extension in CHROME
-			options.addExtensions(new File("/home/bridgelabz6/Music/directapk.crx"));
+			options.addExtensions(new File(jsonInfo.getChromeExtensionPath()));
 
 			DesiredCapabilities capabilities = new DesiredCapabilities();
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
@@ -148,7 +160,7 @@ public class ApkDownloadSelenium {
 			driver.quit();
 		} catch (Exception e) {
 			System.out.println("exception in closing tab");
-			closeTabs(driver);
+
 		}
 
 	}

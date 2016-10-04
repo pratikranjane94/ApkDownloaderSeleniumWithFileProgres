@@ -3,7 +3,9 @@ package com.game.model;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -16,39 +18,67 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import com.game.dto.JsonInfo;
+
 public class Client {
 
-	static int last = 0;
-
 	public static void main(String[] args) throws InterruptedException, IOException, ParseException {
-		Scanner scanner = new Scanner(System.in);
 
 		ApkDownloadSelenium apkDownloadSelenium = new ApkDownloadSelenium();
 		IsDownloaded isDownloaded = new IsDownloaded();
+		JsonInfo jsonInfo = new JsonInfo();
+		JSONParser parser = new JSONParser();
+
+		int size = 0;
+
+		try {
+
+			Object obj = parser.parse(new FileReader("/home/bridgelabz6/Music/properties.json"));
+
+			JSONObject jsonObject = (JSONObject) obj;
+
+			jsonInfo.setRestCall((String) jsonObject.get("restCall"));
+			jsonInfo.setChromeDriverPath((String) jsonObject.get("chromeDriverPath"));
+			jsonInfo.setCredentialsPath((String) jsonObject.get("credentialsPath"));
+			jsonInfo.setChromeExtensionPath((String) jsonObject.get("chromeExtensionPath"));
+			jsonInfo.setApkFileDownloadFolder((String) jsonObject.get("apkFileDownloadFolder"));
+			System.out.println("restCall:" + jsonInfo.getRestCall() + "\ndriver path" + jsonInfo.getChromeDriverPath()
+					+ "\n cred path" + jsonInfo.getCredentialsPath());
+			System.out.println("extension path:" + jsonInfo.getChromeExtensionPath() + "\n download folder"
+					+ jsonInfo.getApkFileDownloadFolder());
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		apkDownloadSelenium.setJsonInfo(jsonInfo);
+		isDownloaded.setJsonInfo(jsonInfo);
+
+		Scanner scanner = new Scanner(System.in);
 
 		ArrayList<String> urlList = new ArrayList<>();
 		ArrayList<ChromeDriver> driverList = new ArrayList<>();
 
-		String csvFilePath = "/home/bridgelabz6/Downloads/eclipse/as.csv";
-		String downloadFilePath = "/home/bridgelabz6/Pictures/files/";
-
-		int size = 0;
+		String csvFilePath = "";
+		String downloadFilePath = "";
 
 		System.out.println("Enter csv file path:");
-		// csvFilePath = scanner.next();
+		csvFilePath = scanner.next();
 
 		System.out.println("Enter path where you want to store the download file:");
-		// downloadFilePath = scanner.next();
+		downloadFilePath = scanner.next();
 
 		// -------------------- rest call to upload
 		// file------------------------------
 
 		HttpClient httpClient = HttpClientBuilder.create().build();
-		HttpPost httpPost = new HttpPost(
-				"http://localhost:8080/ApkDownloaderSeleniumWithFileProgres/rest/controller/upload");
+
+		// doing REST call
+		HttpPost httpPost = new HttpPost(jsonInfo.getRestCall());
 
 		File file = new File(csvFilePath);
 		FileBody fileBody = new FileBody(file);
@@ -111,7 +141,7 @@ public class Client {
 
 				if (i % 5 == 4) {
 					System.out.println("checking after 5 k: " + 5 + " i: " + i);
-					isDownloaded.isDownloadCompleted(fileName, i);
+					isDownloaded.isDownloadCompleted(downloadFilePath, fileName, i);
 					for (ChromeDriver driver : driverList) {
 						apkDownloadSelenium.closeTabs(driver);
 					}
@@ -125,7 +155,7 @@ public class Client {
 			}
 			System.out.println("size:" + size + " Urlist size: " + urlList.size());
 			// checking download completed or not
-			isDownloaded.isDownloadCompleted(fileName, urlList.size());
+			isDownloaded.isDownloadCompleted(downloadFilePath, fileName, urlList.size());
 
 			// closing all tabs
 

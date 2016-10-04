@@ -64,8 +64,5 @@ public class FileStreaming
         }
         httpConn.disconnect();
     }
-        public static void main(String[] args) throws IOException {
-			FileStreaming fileStreaming=new FileStreaming();
-			fileStreaming.downloadFile("https://drive.google.com/open?id=0B5dVQQwaV1z8MnR2dHotVmZGVmM");
-		}
+        
 }
