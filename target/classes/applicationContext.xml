@@ -21,12 +21,20 @@
 			<property name="password" value="root" />
 	</bean> -->
 	
-	<bean id="dataSource"
+	<!--<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 			<property name="driverClassName" value="org.postgresql.Driver" />
 			<property name="url" value="jdbc:postgresql://localhost:5432/game" />
 			<property name="username" value="postgres" />
 			<property name="password" value="postgres" />
+	</bean> -->
+	
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="org.postgresql.Driver" />
+			<property name="url" value="jdbc:postgres://blygafkagrzxin:Ce2b1TE_EKwJswV0FuY9vcFyg_@ec2-54-243-218-37.compute-1.amazonaws.com:5432/d80bcvtg6526s8?username=blygafkagrzxin&amp;password=Ce2b1TE_EKwJswV0FuY9vcFyg_&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"/>
+			<property name="username" value="blygafkagrzxin" />
+			<property name="password" value="Ce2b1TE_EKwJswV0FuY9vcFyg_" />
 	</bean>
 
 	<!-- Configure Hibernate 4 Session Facotry -->
