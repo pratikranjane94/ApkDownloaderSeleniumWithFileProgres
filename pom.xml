@@ -171,10 +171,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.socket</groupId>
-			<artifactId>socket.io-client</artifactId>
-			<version>0.6.1</version>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4-1206-jdbc42</version>
 		</dependency>
+
 
 	</dependencies>
 	<build>

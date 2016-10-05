@@ -82,8 +82,12 @@ public class IsDownloaded {
 
 			loop = loop * 5;
 		} else {
-			loop = last % 5;
-			loop = loop * 5;
+			if (last > 10) {
+				loop = last % 5;
+				loop = loop * 5;
+			}
+			else
+				loop=0;
 		}
 		if (loop % 5 == 0 && loop != 0)
 			loop = loop + 1;

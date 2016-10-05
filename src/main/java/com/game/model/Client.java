@@ -1,3 +1,8 @@
+/*File Name		: Client.java
+ *Created By	: PRATIK RANJANE
+ *Purpose		: Entry point of project, sends file to the server,download APK using SELENIUM and checks whether APK are download or not
+ * */
+
 package com.game.model;
 
 import java.io.BufferedInputStream;
@@ -7,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -18,9 +24,11 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.HttpClientBuilder;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.game.dto.JsonInfo;
@@ -32,16 +40,41 @@ public class Client {
 		ApkDownloadSelenium apkDownloadSelenium = new ApkDownloadSelenium();
 		IsDownloaded isDownloaded = new IsDownloaded();
 		JsonInfo jsonInfo = new JsonInfo();
-		JSONParser parser = new JSONParser();
 
+		JSONParser parser = new JSONParser();
+		Scanner scanner = new Scanner(System.in);
+
+		ArrayList<String> urlList = new ArrayList<>();
+		ArrayList<ChromeDriver> driverList = new ArrayList<>();
+
+		File file;
+		FileBody fileBody;
+		MultipartEntityBuilder builder;
+		HttpResponse response;
+		HttpEntity entity;
+		HttpEntity resEntity;
+
+		BufferedInputStream bis;
+		BufferedOutputStream bos;
+
+		String csvFilePath = "/home/bridgelabz6/Downloads/eclipse/as.csv";
+		String downloadFilePath = "/home/bridgelabz6/Pictures/files/";
+		String propertyJsonPath = "/home/bridgelabz6/Music/properties.json";
+		String fileName;
+		String filePath;
+		
 		int size = 0;
+
+		System.out.println("Enter csv file path:");
+		// propertyJsonPath = scanner.next();
 
 		try {
 
-			Object obj = parser.parse(new FileReader("/home/bridgelabz6/Music/properties.json"));
+			Object obj = parser.parse(new FileReader(propertyJsonPath));
 
 			JSONObject jsonObject = (JSONObject) obj;
 
+			// getting properties from JSON
 			jsonInfo.setRestCall((String) jsonObject.get("restCall"));
 			jsonInfo.setChromeDriverPath((String) jsonObject.get("chromeDriverPath"));
 			jsonInfo.setCredentialsPath((String) jsonObject.get("credentialsPath"));
@@ -55,51 +88,44 @@ public class Client {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+
+		// passing properties from JSON to respective class
 		apkDownloadSelenium.setJsonInfo(jsonInfo);
 		isDownloaded.setJsonInfo(jsonInfo);
 
-		Scanner scanner = new Scanner(System.in);
-
-		ArrayList<String> urlList = new ArrayList<>();
-		ArrayList<ChromeDriver> driverList = new ArrayList<>();
-
-		String csvFilePath = "";
-		String downloadFilePath = "";
-
 		System.out.println("Enter csv file path:");
-		csvFilePath = scanner.next();
+		// csvFilePath = scanner.next();
 
 		System.out.println("Enter path where you want to store the download file:");
-		downloadFilePath = scanner.next();
+		// downloadFilePath = scanner.next();
 
-		// -------------------- rest call to upload
-		// file------------------------------
+		// --------------- rest call to upload file-----------------
 
 		HttpClient httpClient = HttpClientBuilder.create().build();
 
-		// doing REST call
+		// calling REST
 		HttpPost httpPost = new HttpPost(jsonInfo.getRestCall());
 
-		File file = new File(csvFilePath);
-		FileBody fileBody = new FileBody(file);
+		file = new File(csvFilePath);
+		fileBody = new FileBody(file);
 
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+		builder = MultipartEntityBuilder.create();
 		builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
 		// builder.setContentType(ContentType.MULTIPART_FORM_DATA);
 		builder.addPart("files", fileBody);
-		HttpEntity entity = builder.build();
+		entity = builder.build();
 		httpPost.setEntity(entity);
 
 		// execute HTTP post request
-		HttpResponse response = httpClient.execute(httpPost);
+		response = httpClient.execute(httpPost);
 		System.out.println("rsponse from :" + response.toString());
 
 		// ------------------end of rest call----------------------
 
 		// reading file name from response
 
-		String fileName = response.toString();
+		fileName = response.toString();
 		fileName = fileName.substring(fileName.indexOf("filename=") + 10, fileName.indexOf(", Content-Type") - 1);
 		System.out.println("file name:" + fileName);
 
@@ -107,15 +133,15 @@ public class Client {
 
 		// -----------------downloading file to client machine------------
 
-		HttpEntity resEntity = response.getEntity();
+		resEntity = response.getEntity();
 
 		if (resEntity != null) {
 
-			BufferedInputStream bis = new BufferedInputStream(resEntity.getContent());
+			bis = new BufferedInputStream(resEntity.getContent());
 
-			String filePath = downloadFilePath + "/" + fileName;
+			filePath = downloadFilePath + "/" + fileName;
 
-			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+			bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
 			int inByte;
 
 			while ((inByte = bis.read()) != -1)
@@ -149,14 +175,15 @@ public class Client {
 				}
 
 			}
-			for (int j = size; j < urlList.size(); j++) {
-				System.out.println("last for loop started");
-				driverList.add(apkDownloadSelenium.downloadApkUsingSelenium(urlList.get(j)));
+			if (urlList.size() != size) {
+				for (int j = size; j < urlList.size(); j++) {
+					System.out.println("last for loop started");
+					driverList.add(apkDownloadSelenium.downloadApkUsingSelenium(urlList.get(j)));
+				}
+				System.out.println("size:" + size + " Urlist size: " + urlList.size());
+				// checking download completed or not
+				isDownloaded.isDownloadCompleted(downloadFilePath, fileName, urlList.size());
 			}
-			System.out.println("size:" + size + " Urlist size: " + urlList.size());
-			// checking download completed or not
-			isDownloaded.isDownloadCompleted(downloadFilePath, fileName, urlList.size());
-
 			// closing all tabs
 
 			for (ChromeDriver driver : driverList) {
