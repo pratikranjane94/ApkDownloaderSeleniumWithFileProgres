@@ -32,9 +32,9 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 			<property name="driverClassName" value="org.postgresql.Driver" />
-			<property name="url" value="jdbc:postgres://blygafkagrzxin:Ce2b1TE_EKwJswV0FuY9vcFyg_@ec2-54-243-218-37.compute-1.amazonaws.com:5432/d80bcvtg6526s8?username=blygafkagrzxin&amp;password=Ce2b1TE_EKwJswV0FuY9vcFyg_&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"/>
-			<property name="username" value="blygafkagrzxin" />
-			<property name="password" value="Ce2b1TE_EKwJswV0FuY9vcFyg_" />
+			<property name="url" value="jdbc:postgres://iamhngnqwwirhd:ec2-54-243-218-37.compute-1.amazonaws.com:5432/d80bcvtg6526s8?username=iamhngnqwwirhd&amp;password=eSu8fA1yqMr38a3z62PP2EtS5J&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"/>
+			<property name="username" value="iamhngnqwwirhd" />
+			<property name="password" value="eSu8fA1yqMr38a3z62PP2EtS5J" />
 	</bean>
 
 	<!-- Configure Hibernate 4 Session Facotry -->
