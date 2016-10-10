@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd   
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    
+	<mvc:annotation-driven/>
+	<context:component-scan base-package="com.game.controllers"></context:component-scan>
+	
+	<!-- Configure JDBC Connection -->
+	<!-- <bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+			<property name="url" value="jdbc:mysql://localhost:3306/game" />
+			<property name="username" value="root" />
+			<property name="password" value="root" />
+	</bean> -->
+	
+	<!--<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="org.postgresql.Driver" />
+			<property name="url" value="jdbc:postgresql://localhost:5432/game" />
+			<property name="username" value="postgres" />
+			<property name="password" value="postgres" />
+	</bean> -->
+	
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="org.postgresql.Driver" />
+			<property name="url" value="jdbc:postgres://blygafkagrzxin:Ce2b1TE_EKwJswV0FuY9vcFyg_@ec2-54-243-218-37.compute-1.amazonaws.com:5432/d80bcvtg6526s8?username=blygafkagrzxin&amp;password=Ce2b1TE_EKwJswV0FuY9vcFyg_&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"/>
+			<property name="username" value="blygafkagrzxin" />
+			<property name="password" value="Ce2b1TE_EKwJswV0FuY9vcFyg_" />
+	</bean>
+
+	<!-- Configure Hibernate 4 Session Facotry -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<!-- <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+	<property name="annotatedClasses">
+	<list>
+		<!-- <value>com.game.dto.JsoupData</value> -->
+		<value>com.game.dto.Count</value>
+		<value>com.game.dto.SignUp</value>
+	</list>
+	</property>
+	</bean>
+	
+	<!-- class beans -->
+	<bean id="gameJsoupDao" class="com.game.dao.GameJsoupDaoImp"></bean>
+	<bean id="userDaoImp" class="com.game.dao.UserDaoImp"></bean>
+
+</beans>
