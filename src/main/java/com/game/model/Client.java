@@ -57,7 +57,7 @@ public class Client {
 		BufferedInputStream bis;
 		BufferedOutputStream bos;
 
-		String csvFilePath = "/home/bridgelabz6/Downloads/eclipse/as.csv";
+		String csvFilePath = "/home/bridgelabz6/Downloads/eclipse/asd.csv";
 		String downloadFilePath = "/home/bridgelabz6/Pictures/files/";
 		String propertyJsonPath = "/home/bridgelabz6/Music/properties.json";
 		String fileName;
