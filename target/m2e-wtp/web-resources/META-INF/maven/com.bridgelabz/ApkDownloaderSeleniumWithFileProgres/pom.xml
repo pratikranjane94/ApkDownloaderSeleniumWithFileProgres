@@ -173,8 +173,8 @@
 
 	</dependencies>
 	<build>
-	<!-- <plugins>
-			<plugin>
+	<plugins>
+			<!-- <plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.10</version>
@@ -187,7 +187,7 @@
 						</connector>
 					</connectors>
 				</configuration>
-			</plugin>
+			</plugin> -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -212,7 +212,7 @@
 					</execution>
 				</executions>
 			</plugin>
-	</plugins> -->
+	</plugins>
 		<finalName>DirectApkDownloaderSelenium</finalName>
 	</build>
 	<packaging>war</packaging>
