@@ -34,7 +34,7 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 			<property name="driverClassName" value="org.postgresql.Driver" />
-			<property name="url" value="jdbc:postgresql:://lwrylyowvmpahi:FCb1qBYf36DL_t8KfFQocQtScG@ec2-54-243-229-49.compute-1.amazonaws.com:5432/d3sesod0fme70r?username=lwrylyowvmpahi&amp;password=FCb1qBYf36DL_t8KfFQocQtScG&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"/>
+			<property name="url" value="jdbc:postgresql://lwrylyowvmpahi:FCb1qBYf36DL_t8KfFQocQtScG@ec2-54-243-229-49.compute-1.amazonaws.com:5432/d3sesod0fme70r?username=lwrylyowvmpahi&amp;password=FCb1qBYf36DL_t8KfFQocQtScG&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"/>
 			<property name="username" value="lwrylyowvmpahi" />
 			<property name="password" value="FCb1qBYf36DL_t8KfFQocQtScG" />
 	</bean>
