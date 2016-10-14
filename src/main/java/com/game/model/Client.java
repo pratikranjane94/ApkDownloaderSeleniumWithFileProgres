@@ -97,7 +97,7 @@ public class Client {
 		// csvFilePath = scanner.next();
 
 		System.out.println("Enter path where you want to store the download file:");
-		// downloadFilePath = scanner.next();
+		// downloadFilePath = scanner.next();		
 
 		// --------------- rest call to upload file-----------------
 
@@ -138,7 +138,7 @@ public class Client {
 		if (resEntity != null) {
 
 			bis = new BufferedInputStream(resEntity.getContent());
-
+			
 			filePath = downloadFilePath + "/" + fileName;
 
 			bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
@@ -156,6 +156,8 @@ public class Client {
 			// getting list of play store link by reading file
 			urlList = apkDownloadSelenium.readFile(filePath);
 
+			System.out.println("url list:"+urlList.toString());
+			
 			// -------opening play store links using selenium--------
 			size = urlList.size() / 5;
 			size = size * 5;

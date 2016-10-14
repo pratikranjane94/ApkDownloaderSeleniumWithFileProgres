@@ -7,10 +7,8 @@
 package com.game.controllers;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -18,8 +16,8 @@ import java.util.LinkedList;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.chrome.ChromeDriver;
+
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,7 +61,8 @@ public class FileController {
 	String temp = ""; // game name temporary
 	String fileSize; // size of uploaded file
 	String fileName; // name of uploaded file
-	String downloadFileName; // downloading name for file
+	String downloadFileName; // downloading name for file.
+	String fileNameID;
 	int progress = 0; // no of game's JSOUP completed
 	int count; // temporary stores total no of game in file
 	int id; // unique id for each uploaded file
@@ -107,14 +106,16 @@ public class FileController {
 
 			try {
 				fileMeta.setBytes(mpf.getBytes());
-
-				// copy uploaded file to local disk
+				final InputStreamReader reader=new InputStreamReader(mpf.getInputStream());
+				InputStreamReader reader2=new InputStreamReader(mpf.getInputStream());
+				/*// copy uploaded file to local disk
 				FileCopyUtils.copy(mpf.getBytes(),
-						new FileOutputStream("/home/bridgelabz6/Pictures/files/" + fileName));
+						new FileOutputStream("/home/bridgelabz6/Pictures/files/" + fileName));*/
 
 				// counting no of games in file
-				FileReader frCount = new FileReader("/home/bridgelabz6/Pictures/files/" + fileName);
-				BufferedReader brCount = new BufferedReader(frCount);
+				//FileReader frCount = new FileReader("/home/bridgelabz6/Pictures/files/" + fileName);
+				BufferedReader brCount = new BufferedReader(reader);
+				
 				while (brCount.readLine() != null) {
 					count++;
 				}
@@ -126,13 +127,14 @@ public class FileController {
 				fileMeta.setTotalGames(totoalGames);
 				System.out.println("totoalGames:" + totoalGames);
 
-				brCount.close();
+				//brCount.close();
 				// end of counting game
 
+				
 				/*----------------------------JSOUP started--------------------------------*/
 
-				FileReader fr = new FileReader("/home/bridgelabz6/Pictures/files/" + fileName);
-				BufferedReader br = new BufferedReader(fr);
+				//FileReader fr = new FileReader("/home/bridgelabz6/Pictures/files/" + fileName);
+				BufferedReader br = new BufferedReader(reader2);
 
 				line = br.readLine();
 				if (line == null) {
@@ -158,7 +160,8 @@ public class FileController {
 
 						// exception handling if URL not found
 						if (url == null) {
-							gameNotFound.addGameNotFound("Url", temp);
+							//gameNotFound.addGameNotFound("Url", temp);
+							System.err.println("URL Not Found");
 							continue;
 						} // end of handling in URL fetching
 
@@ -167,17 +170,18 @@ public class FileController {
 
 						// handling exception in play store details
 						if (playStoreDetails.equals(null)) {
-							gameNotFound.addGameNotFound("PlayStore", temp);
+							//gameNotFound.addGameNotFound("PlayStore", temp);
+							System.err.println("PlayStore Data Not Found");
 						} // end of handling in play store details
 
 						// creating CSV file of play store data
-						psStatus = psdf.createCsv(playStoreDetails, downloadFileName);
+						//psStatus = psdf.createCsv(playStoreDetails, downloadFileName);
 
 						// handling exception in creating play store data CSV
 						// file
-						if (psStatus == false) {
+						/*if (psStatus == false) {
 							gameNotFound.addGameNotFoundInFile("PlayStore", temp, downloadFileName);
-						}
+						}*/
 
 						// getting play store package name
 						String pack = psdf.getPackage(playStoreDetails);
@@ -187,17 +191,19 @@ public class FileController {
 
 						// handling exception in APK site details
 						if (apkSiteDetails == null) {
-							gameNotFound.addGameNotFoundInFile("DlApk", temp, downloadFileName);
+							//gameNotFound.addGameNotFoundInFile("DlApk", temp, downloadFileName);
+							System.err.println("DL-APK Data Not Found");
 						} // end of handling in APK-DL
 
-						// creating CSV file of APK-DL site details
+						/*// creating CSV file of APK-DL site details
 						status = asdf.createCsv(apkSiteDetails, downloadFileName);
 
 						// handling exception in creating APK-DL data CSV file
 						if (status == false) {
-							//gameNotFound.addGameNotFoundInFile("DlApk", temp, downloadFileName);
+							// gameNotFound.addGameNotFoundInFile("DlApk", temp,
+							// downloadFileName);
 							System.out.println("eception handled");
-						}
+						}*/
 
 						// Database entry
 						if (gameJsoupDao.isEmpty())
@@ -225,8 +231,9 @@ public class FileController {
 
 					} // end of for
 
-					String fileNameID = fileName.replace(".", Integer.toString(id) + ".");
+					fileNameID = fileName.replace(".", Integer.toString(id) + ".");
 					gameJsoupDao.update(fileNameID, id);
+					fileMeta.setFileName(fileNameID);
 				} // end of else
 				br.close();
 
@@ -236,7 +243,7 @@ public class FileController {
 			// adding metaFile info to ArrayList files
 			files.add(fileMeta);
 
-			// concatenating ID with filename
+/*			// concatenating ID with filename
 			String fileNameID = fileName.replace(".", Integer.toString(id) + ".");
 			String downloadFileNameID = downloadFileName.replace(".", Integer.toString(id) + ".");
 
@@ -258,36 +265,38 @@ public class FileController {
 				System.out.println("File renamed");
 			else
 				System.out.println("Sorry! File can't be renamed");
-
+*/
 			// copy downloading file to local disk
-			fileMeta.setDownBytes(FileUtils.readFileToByteArray(newDownloadfile));
+			//fileMeta.setDownBytes(FileUtils.readFileToByteArray(newDownloadfile));
 
 			System.out.println("-----------End Of Program-----------");
-			
+
 		} // end of outside while
-		
+
 		// end of first function
-		
+
 		// start of download function
-		
+
 		try {
 
 			// writing download file in byte
-			System.out.println("after download file name:" + fileMeta.getDownloadFileName());
-			File file = new File("/home/bridgelabz6/Pictures/files/" + fileMeta.getDownloadFileName());
-			byte[] byteArray = new byte[(int) file.length()];
-			byteArray = FileUtils.readFileToByteArray(file);
-			// end of writing to bytes
+			System.out.println("after download file name:" + fileNameID);
+			
+			String data =gameJsoupDao.getFileRecords(fileNameID);
 
 			response.setContentType(fileMeta.getFileType());
 			response.setHeader("Content-disposition",
-					"attachment; filename=\"" + fileMeta.getDownloadFileName() + "\"");
-			FileCopyUtils.copy(byteArray, response.getOutputStream());
-			System.out.println("download file name:"+fileMeta.getDownloadFileName());
-			System.out.println("controller response:"+response.toString());
+					"attachment; filename=\"" + fileMeta.getFileName() + "\"");
+			FileCopyUtils.copy(data.getBytes(), response.getOutputStream());
+			System.out.println("download file name:" + fileMeta.getDownloadFileName());
+			System.out.println("controller response:" + response.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}// End of Downloading file function
 
 }// End of class
+
+
+
+

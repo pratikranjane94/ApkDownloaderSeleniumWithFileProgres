@@ -107,7 +107,7 @@ public class IsDownloaded {
 
 					dowFileName = st2.readLine();
 
-					String[] gname = dowFileName.split("\\^");
+					String[] gname = dowFileName.split("\\,");
 					dowFileName = gname[5];
 					if (dowFileName.equals(null))
 						break;

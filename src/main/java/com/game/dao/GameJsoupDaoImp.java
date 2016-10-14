@@ -70,7 +70,6 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 	@SuppressWarnings("rawtypes")
 	public boolean isEmpty() {
 		session = sessionFactory.openSession();
-		session.beginTransaction();
 		
 		Query query = session.createQuery("from Count");
 		List list = query.list();
@@ -181,11 +180,54 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 	public void update(String fileName, int id) {
 		session = sessionFactory.openSession();
 		
-		Query update = session.createQuery("update Count set filename=:filename where id=:id");
+		Query update = session.createQuery("update Count set fileName=:filename where id=:id");
 		update.setString("filename", fileName);
 		update.setInteger("id", id);
 		update.executeUpdate();
 		session.close();
 		System.out.println("Updated");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String getFileRecords(String fileName){
+		session = sessionFactory.openSession();
+		String data = "kasdjkajksd \n";
+		
+		Query query = session.createQuery("from Count where fileName=:fileName");
+		query.setString("fileName", fileName);
+		
+		List<Count> list = query.list();
+		for (Count count2 : list) {
+			data = data + count2.getTitle();
+			data = data + ",";
+			data = data + count2.getGenre();
+			data = data + ",";
+			data = data + count2.getSize();
+			data = data + ",";
+			data = data + count2.getVersion();
+			data = data + ",";
+			data = data + count2.getPublishDate();
+			data = data + ",";
+			data = data + count2.getPackageName();
+			data = data + ",";
+			data = data + count2.getUrl();
+			data = data + ",";
+			data = data + count2.getDlTitle();
+			data = data + ",";
+			data = data + count2.getDlGenre();
+			data = data + ",";
+			data = data + count2.getDlSize();
+			data = data + ",";
+			data = data + count2.getDlVersion();
+			data = data + ",";
+			data = data + count2.getDlPublishDate();
+			data = data + ",";
+			data = data + count2.getDownloadLink();
+			data = data + "\n";
+		}
+		System.out.println(data);
+		
+		return data;
+		
 	}
 }

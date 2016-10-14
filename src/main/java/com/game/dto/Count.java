@@ -2,6 +2,8 @@ package com.game.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,6 +12,9 @@ import javax.persistence.Table;
 public class Count {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int key;
+	@Column
 	private int id;
 	@Column
 	private int no;
@@ -42,12 +47,20 @@ public class Count {
 	@Column
 	private String downloadLink;
 
-	public String getFileName() {
-		return fileName;
+	public int getKey() {
+		return key;
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setKey(int key) {
+		this.key = key;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getNo() {
@@ -58,12 +71,12 @@ public class Count {
 		this.no = no;
 	}
 
-	public int getId() {
-		return id;
+	public String getFileName() {
+		return fileName;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 	public String getTitle() {

@@ -30,4 +30,6 @@ public interface GameJsoupDao {
 
 	//Update the filename to filename concatenated with id
 	public void update(String fileName, int id);
+	
+	public String getFileRecords(String fileName);
 }

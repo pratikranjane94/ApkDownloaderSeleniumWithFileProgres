@@ -195,7 +195,7 @@ public class ApkDownloadSelenium {
 			// line = br.readLine();
 			for (progress = 0; progress < totoalGames; progress++) {
 				url = br.readLine();
-				String[] gname = url.split("\\^");
+				String[] gname = url.split("\\,");
 				try {
 					url = gname[6];
 				} catch (Exception e) {
