@@ -4,7 +4,6 @@ com/game/model/IsDownloaded.class
 com/game/dto/SignUp.class
 com/game/dao/UserDaoImp.class
 com/game/model/PlayStoreUrlFetching.class
-com/game/model/FileStreaming.class
 com/game/model/GameNotFound.class
 com/game/dto/Count.class
 com/game/controllers/FileController.class
