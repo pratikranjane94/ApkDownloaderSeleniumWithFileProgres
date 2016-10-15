@@ -1,7 +1,7 @@
 /*File Name		: IsDownloaded.java
  *Created By	: PRATIK RANJANE
  *Purpose		: Checking each game from file is download or not, if download is completed it is moved into 
- *				  folder with name same as file name.
+ *				  folder with same name as file name.
  * */
 
 package com.game.model;
@@ -108,17 +108,13 @@ public class IsDownloaded {
 					dowFileName = st2.readLine();
 
 					String[] gname = dowFileName.split("\\,");
-					dowFileName = gname[6];
+					dowFileName = gname[5];
 					if (dowFileName.equals(null))
 						break;
 					System.out.println("Game name:" + dowFileName);
 				} catch (Exception e) {
 					break;
 				}
-
-				/*
-				 * if(dowFileName.equals(null)) dowFileName=st2.readLine();
-				 */
 
 				data = isFileDownloaded(dowFileName);
 
@@ -143,6 +139,7 @@ public class IsDownloaded {
 				} else {
 					data = isFileDownloaded(dowFileName);
 
+					//if file is currently downloading, keeps checking until downloading is completed
 					while (data.get(1) != "true") {
 						Thread.sleep(1000);
 						System.out.println("download file name:" + dowFileName);
@@ -175,18 +172,11 @@ public class IsDownloaded {
 				} // end of inner for else
 
 			} // end of for
-			/*
-			 * while (st2.readLine() != null) { try { st2.readLine(); } catch
-			 * (Exception e) { System.out.println("going to next line"); } }
-			 */
+			
 			st2.close();
 			System.out.println("completed for loop");
 		}
 
 	}
-	/*
-	 * public static void main(String[] args) throws IOException,
-	 * InterruptedException { IsDownloaded downloaded = new IsDownloaded();
-	 * downloaded.downloadCompleted("asdDownload111.csv", 2); }
-	 */
+	
 }

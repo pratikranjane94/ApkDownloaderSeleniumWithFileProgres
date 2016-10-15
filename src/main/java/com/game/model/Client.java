@@ -57,16 +57,16 @@ public class Client {
 		BufferedInputStream bis;
 		BufferedOutputStream bos;
 
-		String csvFilePath = "/home/bridgelabz6/Downloads/eclipse/asd.csv";
-		String downloadFilePath = "/home/bridgelabz6/Pictures/files/";
-		String propertyJsonPath = "/home/bridgelabz6/Music/properties.json";
+		String csvFilePath = "";
+		String downloadFilePath = "";
+		String propertyJsonPath = "";
 		String fileName;
 		String filePath;
 		
 		int size = 0;
 
-		System.out.println("Enter csv file path:");
-		// propertyJsonPath = scanner.next();
+		System.out.println("Enter property.json file path:");
+		 propertyJsonPath = scanner.next();
 
 		try {
 
@@ -80,8 +80,8 @@ public class Client {
 			jsonInfo.setCredentialsPath((String) jsonObject.get("credentialsPath"));
 			jsonInfo.setChromeExtensionPath((String) jsonObject.get("chromeExtensionPath"));
 			jsonInfo.setApkFileDownloadFolder((String) jsonObject.get("apkFileDownloadFolder"));
-			System.out.println("restCall:" + jsonInfo.getRestCall() + "\ndriver path" + jsonInfo.getChromeDriverPath()
-					+ "\n cred path" + jsonInfo.getCredentialsPath());
+			System.out.println("restCall:" + jsonInfo.getRestCall() + "\ndriver path:" + jsonInfo.getChromeDriverPath()
+					+ "\n cred path:" + jsonInfo.getCredentialsPath());
 			System.out.println("extension path:" + jsonInfo.getChromeExtensionPath() + "\n download folder"
 					+ jsonInfo.getApkFileDownloadFolder());
 
@@ -94,10 +94,10 @@ public class Client {
 		isDownloaded.setJsonInfo(jsonInfo);
 
 		System.out.println("Enter csv file path:");
-		// csvFilePath = scanner.next();
+		 csvFilePath = scanner.next();
 
 		System.out.println("Enter path where you want to store the download file:");
-		// downloadFilePath = scanner.next();		
+		 downloadFilePath = scanner.next();		
 
 		// --------------- rest call to upload file-----------------
 
@@ -133,7 +133,6 @@ public class Client {
 			fileName = fileName.substring(fileName.indexOf("filename=") + 10, fileName.indexOf(", Server:") - 1);
 		System.out.println("file name:" + fileName);
 
-		System.exit(0);
 		// end of reading file name
 
 		// -----------------downloading file to client machine------------

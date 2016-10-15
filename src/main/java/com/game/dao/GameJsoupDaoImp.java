@@ -70,10 +70,10 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 	@SuppressWarnings("rawtypes")
 	public boolean isEmpty() {
 		session = sessionFactory.openSession();
-		
+
 		Query query = session.createQuery("from Count");
 		List list = query.list();
-		
+
 		System.out.println("Is empty:" + list.size());
 		session.close();
 		if (list.size() <= 0)
@@ -150,36 +150,36 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 	}
 
 	// Returns last progress of given file
-		@SuppressWarnings("rawtypes")
-		public int checkProgress(String fileName, int id) {
-			Count count = new Count();
-			int progress = 0;
+	@SuppressWarnings("rawtypes")
+	public int checkProgress(String fileName, int id) {
+		Count count = new Count();
+		int progress = 0;
 
-			session = sessionFactory.openSession();
+		session = sessionFactory.openSession();
 
-			// Returns data in descending order
-			Query query = session.createQuery("from Count where fileName=:fileName and id=:id order by no DESC");
-			query.setString("fileName", fileName);
-			query.setInteger("id", id);
+		// Returns data in descending order
+		Query query = session.createQuery("from Count where fileName=:fileName and id=:id order by no DESC");
+		query.setString("fileName", fileName);
+		query.setInteger("id", id);
 
-			// Restricting no of records to one to get last progress
-			query.setMaxResults(1);
+		// Restricting no of records to one to get last progress
+		query.setMaxResults(1);
 
-			List list = query.list();
-			for (int i = 0; i < list.size(); i++) {
-				count = (Count) list.get(i);
-			}
-			// getting last progress
-			progress = count.getNo();
-			session.close();
-			System.out.println("total Progress(db):" + progress);
-			return progress;
+		List list = query.list();
+		for (int i = 0; i < list.size(); i++) {
+			count = (Count) list.get(i);
 		}
-		
-	//Update the filename to filename concatenated with id 
+		// getting last progress
+		progress = count.getNo();
+		session.close();
+		System.out.println("total Progress(db):" + progress);
+		return progress;
+	}
+
+	// Update the filename to filename concatenated with id
 	public void update(String fileName, int id) {
 		session = sessionFactory.openSession();
-		
+
 		Query update = session.createQuery("update Count set fileName=:filename where id=:id");
 		update.setString("filename", fileName);
 		update.setInteger("id", id);
@@ -187,15 +187,15 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 		session.close();
 		System.out.println("Updated");
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public String getFileRecords(String fileName){
+	public String getFileRecords(String fileName) {
 		session = sessionFactory.openSession();
-		String data = "kasdjkajksd \n";
-		
+		String data = "PlayStore Title,Genre,Size,Version,Publish Date,Package,Url,Apk Title,Genre,Size,Version,Publish Date,Download Link \n";
+
 		Query query = session.createQuery("from Count where fileName=:fileName");
 		query.setString("fileName", fileName);
-		
+
 		List<Count> list = query.list();
 		for (Count count2 : list) {
 			data = data + count2.getTitle();
@@ -226,8 +226,8 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 			data = data + "\n";
 		}
 		System.out.println(data);
-		
+
 		return data;
-		
+
 	}
 }

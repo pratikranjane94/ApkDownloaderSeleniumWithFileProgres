@@ -147,7 +147,7 @@ public class FileController {
 						fileMeta.setProgress(progress);
 
 						temp = line;
-						String[] gname = line.split("\\^");
+						String[] gname = line.split("\\,");
 
 						// Separates the game name from line read from file
 						line = gname[1];
@@ -279,9 +279,9 @@ public class FileController {
 
 		try {
 
-			// writing download file in byte
 			System.out.println("after download file name:" + fileNameID);
-			
+
+			// writing download file in byte
 			String data =gameJsoupDao.getFileRecords(fileNameID);
 
 			response.setContentType(fileMeta.getFileType());
