@@ -198,7 +198,7 @@ public class ApkDownloadSelenium {
 				url = br.readLine();
 				String[] gname = url.split("\\,");
 				try {
-					url = gname[6];
+					url = gname[7];
 				} catch (Exception e) {
 					System.out.println("unable to read url");
 				}

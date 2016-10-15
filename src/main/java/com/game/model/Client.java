@@ -126,9 +126,14 @@ public class Client {
 		// reading file name from response
 
 		fileName = response.toString();
-		fileName = fileName.substring(fileName.indexOf("filename=") + 10, fileName.indexOf(", Content-Type") - 1);
+		System.out.println("response filename:"+fileName);
+		if(jsonInfo.getRestCall().contains("localhost"))
+			fileName = fileName.substring(fileName.indexOf("filename=") + 10, fileName.indexOf(", Content-Type") - 1);
+		else
+			fileName = fileName.substring(fileName.indexOf("filename=") + 10, fileName.indexOf(", Server:") - 1);
 		System.out.println("file name:" + fileName);
 
+		System.exit(0);
 		// end of reading file name
 
 		// -----------------downloading file to client machine------------

@@ -108,7 +108,7 @@ public class IsDownloaded {
 					dowFileName = st2.readLine();
 
 					String[] gname = dowFileName.split("\\,");
-					dowFileName = gname[5];
+					dowFileName = gname[6];
 					if (dowFileName.equals(null))
 						break;
 					System.out.println("Game name:" + dowFileName);
