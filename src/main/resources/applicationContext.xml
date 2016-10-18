@@ -22,22 +22,22 @@
 	</bean> -->
 	
 	<!-- Configure Postgres Connection for Local -->
-	<bean id="dataSource"
+<!-- 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 			<property name="driverClassName" value="org.postgresql.Driver" />
 			<property name="url" value="jdbc:postgresql://localhost:5432/game" />
 			<property name="username" value="postgres" />
 			<property name="password" value="postgres" />
-	</bean>
+	</bean> -->
 	
 	<!-- Configure Postgres Connection for heroku -->	
-<!-- 	<bean id="dataSource"
+	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 			<property name="driverClassName" value="org.postgresql.Driver" />
 			<property name="url" value="jdbc:postgresql://ec2-54-243-229-49.compute-1.amazonaws.com:5432/d3sesod0fme70r?user=lwrylyowvmpahi&amp;password=FCb1qBYf36DL_t8KfFQocQtScG&amp;sslmode=require"/>
 			<property name="username" value="lwrylyowvmpahi" />
 			<property name="password" value="FCb1qBYf36DL_t8KfFQocQtScG" />
-	</bean> -->
+	</bean>
 
 	<!-- Configure Hibernate 4 Session Facotry -->
 	<bean id="sessionFactory"
