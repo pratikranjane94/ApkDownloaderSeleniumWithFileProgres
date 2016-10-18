@@ -3,7 +3,7 @@
  *Purpose		: Entry point of project, sends file to the server,download APK using SELENIUM and checks whether APK are download or not
  * */
 
-package com.game.model;
+package com.game.Client;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -32,6 +32,10 @@ import org.json.simple.parser.ParseException;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.game.dto.JsonInfo;
+import com.game.model.ApkDownloadSelenium;
+import com.game.model.ApkSiteDataFetching;
+import com.game.model.IsDownloaded;
+import com.game.model.PlayStoreDataFetching;
 
 public class Client {
 
@@ -40,6 +44,8 @@ public class Client {
 		ApkDownloadSelenium apkDownloadSelenium = new ApkDownloadSelenium();
 		IsDownloaded isDownloaded = new IsDownloaded();
 		JsonInfo jsonInfo = new JsonInfo();
+		PlayStoreDataFetching playStoreDataFetching=new PlayStoreDataFetching();
+		ApkSiteDataFetching apkSiteDataFetching=new ApkSiteDataFetching();
 
 		JSONParser parser = new JSONParser();
 		Scanner scanner = new Scanner(System.in);
@@ -89,15 +95,21 @@ public class Client {
 			e.printStackTrace();
 		}
 
-		// passing properties from JSON to respective class
-		apkDownloadSelenium.setJsonInfo(jsonInfo);
-		isDownloaded.setJsonInfo(jsonInfo);
-
 		System.out.println("Enter csv file path:");
 		 csvFilePath = scanner.next();
 
 		System.out.println("Enter path where you want to store the download file:");
-		 downloadFilePath = scanner.next();		
+		 downloadFilePath = scanner.next();	
+		 
+		 jsonInfo.setCsvDownloadFilePath(downloadFilePath);
+		 
+		// passing properties from JSON to respective class
+			apkDownloadSelenium.setJsonInfo(jsonInfo);
+			isDownloaded.setJsonInfo(jsonInfo);
+			playStoreDataFetching.setJsonInfo(jsonInfo);
+			apkSiteDataFetching.setJsonInfo(jsonInfo);
+			
+		 
 
 		// --------------- rest call to upload file-----------------
 
@@ -162,13 +174,13 @@ public class Client {
 
 			System.out.println("url list:"+urlList.toString());
 			
-			// -------opening play store links using selenium--------
+			// -------opening play store links using SELENIUM--------
 			size = urlList.size() / 5;
 			size = size * 5;
 			for (int i = 0; i < size; i++) {
 				System.out.println("play store url:" + urlList.get(i));
 
-				// downloading APK using selenium
+				// downloading APK using SELENIUM
 				driverList.add(apkDownloadSelenium.downloadApkUsingSelenium(urlList.get(i)));
 
 				if (i % 5 == 4) {

@@ -65,7 +65,7 @@ public class IsDownloaded {
 	public void isDownloadCompleted(String downloadFilePath, String fileName, int last)
 			throws IOException, InterruptedException {
 		System.out.println("file path:" + downloadFilePath);
-		FileReader st1 = new FileReader(downloadFilePath + fileName);
+		FileReader st1 = new FileReader(downloadFilePath+"/"+ fileName);
 		BufferedReader st2 = new BufferedReader(st1);
 		ArrayList<String> data = new ArrayList<>();
 

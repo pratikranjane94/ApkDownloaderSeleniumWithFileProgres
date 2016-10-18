@@ -11,16 +11,22 @@ import java.io.File;
 import java.io.FileWriter;
 
 public class GameNotFound {
+	private String filePath;
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
 	public void addGameNotFoundInFile(String fileName,String temp,String downloadFileName)
 	{
 		try {
 			//adding game name who's data is not fetched
-			File notFetched = new File("/home/bridgelabz6/Pictures/files/"+fileName+"StoreNotFetched.csv");
+			File notFetched = new File(filePath+"/"+fileName+"StoreNotFetched.csv");
 			FileWriter fw = new FileWriter(notFetched.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
 			//adding next line in download file if exception occurs
-			File asd = new File("/home/bridgelabz6/Pictures/files/"+downloadFileName);
+			File asd = new File(filePath+"/"+downloadFileName);
 			FileWriter asdfw = new FileWriter(asd.getAbsoluteFile(), true);
 			BufferedWriter asdbw = new BufferedWriter(asdfw);
 			
@@ -52,7 +58,7 @@ public class GameNotFound {
 	public void addGameNotFound(String fileName,String temp)
 	{
 		try {
-			File notFetched = new File("/home/bridgelabz6/Pictures/files/"+fileName+"notFetched.csv");
+			File notFetched = new File(filePath+"/"+fileName+"notFetched.csv");
 
 			// if file doesn't exists, then create it
 			if (!notFetched.exists()) {

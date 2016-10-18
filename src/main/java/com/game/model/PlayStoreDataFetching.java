@@ -16,10 +16,18 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import com.game.dto.JsonInfo;
+
 public class PlayStoreDataFetching {
 	
-			/*-----------------------Scraping PlayStore site data---------------------------*/
+	private JsonInfo jsonInfo;
+
+	public void setJsonInfo(JsonInfo jsonInfo) {
+		this.jsonInfo = jsonInfo;
+	}
 	
+			/*-----------------------Scraping PlayStore site data---------------------------*/
+
 	public ArrayList<String> getPlayStoreData(String url)
 	{
 
@@ -66,7 +74,7 @@ public class PlayStoreDataFetching {
 					String newVer=doc.getElementsByClass("recent-change").text();
 					System.err.println("old new version:"+newVer);
 					newVer=newVer.substring(newVer.indexOf(".")-1, newVer.indexOf(".")+5).trim();
-					version = newVer.replaceAll("[^0-9.]", ""); 
+					version = newVer.replaceAll("[,0-9.]", ""); 
 					System.out.println("new version:"+version);
 			}*/
 
@@ -125,7 +133,8 @@ public class PlayStoreDataFetching {
 		String url = playStoreDetails.get(6);
 		boolean notFound=false;
 		try {
-			File file = new File("/home/bridgelabz6/Pictures/files/"+downloadFileName); //adding data to CSV
+			System.out.println("csv download file path:"+jsonInfo.getCsvDownloadFilePath());
+			File file = new File(jsonInfo.getCsvDownloadFilePath()+"/"+downloadFileName); //adding data to CSV
 			if(!file.exists())
 				notFound=true;
 			
@@ -136,32 +145,32 @@ public class PlayStoreDataFetching {
 			// if file doesn't exists, then create it
 			if (notFound) {
 				file.createNewFile();
-				bw.append("PlayStore Title^Genre^Size^Version^Publish Date^Package^Url^");
-				bw.append("Apk Title^Genre^Size^Version^Publish Date^Download Link^");
+				bw.append("PlayStore Title,Genre,Size,Version,Publish Date,Package,Url,");
+				bw.append("Apk Title,Genre,Size,Version,Publish Date,Download Link,");
 				bw.newLine();
 			}
 
 			if(playStoreDetails.equals(null) || playStoreDetails.equals(""))
 			{
-				bw.append("null^null^null^null^null^null^");
+				bw.append("null,null,null,null,null,null,");
 				bw.close();
 			}
 			else{
 			//adding data to file
 			bw.append(title);
-			bw.append("^");
+			bw.append(",");
 			bw.append(genre);
-			bw.append("^");
+			bw.append(",");
 			bw.append(size);
-			bw.append("^");
+			bw.append(",");
 			bw.append(version);
-			bw.append("^");
+			bw.append(",");
 			bw.append(pDate);
-			bw.append("^");
+			bw.append(",");
 			bw.append(pack);
-			bw.append("^");
+			bw.append(",");
 			bw.append(url);
-			bw.append("^");
+			bw.append(",");
 			bw.close();
 			}
 			System.out.println("Done");

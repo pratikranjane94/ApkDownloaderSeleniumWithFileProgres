@@ -16,7 +16,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import com.game.dto.JsonInfo;
+
 public class ApkSiteDataFetching {
+	
+	private JsonInfo jsonInfo;
+
+	public void setJsonInfo(JsonInfo jsonInfo) {
+		this.jsonInfo = jsonInfo;
+	}
 	
 	public ArrayList<String> createApkSiteDetails(String pack) {
 
@@ -131,7 +139,7 @@ public class ApkSiteDataFetching {
 			
 			boolean notFound=false;
 			
-			File file = new File("/home/bridgelabz6/Pictures/files/"+downloadFileName);
+			File file = new File(jsonInfo.getCsvDownloadFilePath()+"/"+downloadFileName);
 			
 			if(!file.exists())
 				notFound=true;
@@ -142,25 +150,25 @@ public class ApkSiteDataFetching {
 			// if file doesn't exists, then create it
 			if (notFound) {
 				file.createNewFile();
-				bw.append("PlayStore Title^Genre^Size^Version^Publish Date^Package^Url^");
-				bw.append("Apk Title^Genre^Size^Version^Publish Date^Download Link^");
+				bw.append("PlayStore Title,Genre,Size,Version,Publish Date,Package,Url,");
+				bw.append("Apk Title,Genre,Size,Version,Publish Date,Download Link,");
 				bw.newLine();
 			}
 			if(apkSiteDetails.equals(null) || apkSiteDetails.equals("")){
-				bw.append("null^null^null^null^null^null^");
+				bw.append("null,null,null,null,null,null,");
 			}else{
 				bw.append(title);
-				bw.append("^");
+				bw.append(",");
 				bw.append(genre);
-				bw.append("^");
+				bw.append(",");
 				bw.append(size);
-				bw.append("^");
+				bw.append(",");
 				bw.append(version);
-				bw.append("^");
+				bw.append(",");
 				bw.append(pDate);
-				bw.append("^");
+				bw.append(",");
 				bw.append(downUrl);
-				bw.append("^");
+				bw.append(",");
 				if (downUrl.contains("http://dl3.apk-dl.com/store/download?id")) {
 					System.out.println("inside if");
 					bw.append("Broken Link");

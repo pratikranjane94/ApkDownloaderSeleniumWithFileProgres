@@ -125,7 +125,7 @@ public class FileController {
 				count = 0;
 
 				fileMeta.setTotalGames(totoalGames);
-				System.out.println("totoalGames:" + totoalGames);
+				System.out.println("totalGames:" + totoalGames);
 
 				//brCount.close();
 				// end of counting game
@@ -288,7 +288,7 @@ public class FileController {
 			response.setHeader("Content-disposition",
 					"attachment; filename=\"" + fileMeta.getFileName() + "\"");
 			FileCopyUtils.copy(data.getBytes(), response.getOutputStream());
-			System.out.println("download file name:" + fileMeta.getDownloadFileName());
+			System.out.println("download file name:" + fileMeta.getFileName());
 			System.out.println("controller response:" + response.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
