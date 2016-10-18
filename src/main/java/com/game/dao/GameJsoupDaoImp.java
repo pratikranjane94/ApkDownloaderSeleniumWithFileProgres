@@ -206,7 +206,12 @@ public class GameJsoupDaoImp implements GameJsoupDao {
 			data = data + ",";
 			data = data + count2.getVersion();
 			data = data + ",";
-			data = data + count2.getPublishDate();
+			
+			String date=count2.getPublishDate();
+			if(date.contains(","))
+				date=date.replaceAll(",", "");
+			
+			data = data + date;
 			data = data + ",";
 			data = data + count2.getPackageName();
 			data = data + ",";
