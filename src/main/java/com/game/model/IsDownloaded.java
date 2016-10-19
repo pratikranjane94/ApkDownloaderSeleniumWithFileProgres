@@ -40,7 +40,7 @@ public class IsDownloaded {
 		String flag = "false";
 		ArrayList<String> info = new ArrayList<>();
 
-		File dir = new File("/home/bridgelabz6/Downloads/apk-downloader/");
+		File dir = new File(jsonInfo.getApkFileDownloadFolder());
 		File[] dir_contents = dir.listFiles();
 
 		for (int i = 0; i < dir_contents.length; i++) {

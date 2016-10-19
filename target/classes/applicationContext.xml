@@ -21,7 +21,7 @@
 			<property name="password" value="root" />
 	</bean> -->
 	
-	<!-- Configure Postgres Connection for Local -->
+ 	<!-- Configure Postgres Connection for Local -->
 <!-- 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 			<property name="driverClassName" value="org.postgresql.Driver" />

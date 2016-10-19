@@ -87,8 +87,8 @@ public class Client {
 			jsonInfo.setChromeExtensionPath((String) jsonObject.get("chromeExtensionPath"));
 			jsonInfo.setApkFileDownloadFolder((String) jsonObject.get("apkFileDownloadFolder"));
 			System.out.println("restCall:" + jsonInfo.getRestCall() + "\ndriver path:" + jsonInfo.getChromeDriverPath()
-					+ "\n cred path:" + jsonInfo.getCredentialsPath());
-			System.out.println("extension path:" + jsonInfo.getChromeExtensionPath() + "\n download folder"
+					+ "\ncredentials path:" + jsonInfo.getCredentialsPath());
+			System.out.println("extension path:" + jsonInfo.getChromeExtensionPath() + "\ndownload folder"
 					+ jsonInfo.getApkFileDownloadFolder());
 
 		} catch (FileNotFoundException e) {
