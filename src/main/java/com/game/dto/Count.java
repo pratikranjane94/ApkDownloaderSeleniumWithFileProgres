@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class Count {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private int key;
 	@Column
 	private int id;
