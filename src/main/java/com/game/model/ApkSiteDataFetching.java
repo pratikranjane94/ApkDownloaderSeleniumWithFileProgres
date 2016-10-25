@@ -19,13 +19,13 @@ import org.jsoup.select.Elements;
 import com.game.dto.JsonInfo;
 
 public class ApkSiteDataFetching {
-	
+
 	private JsonInfo jsonInfo;
 
 	public void setJsonInfo(JsonInfo jsonInfo) {
 		this.jsonInfo = jsonInfo;
 	}
-	
+
 	public ArrayList<String> createApkSiteDetails(String pack) {
 
 		ArrayList<String> s1 = new ArrayList<String>();
@@ -77,19 +77,19 @@ public class ApkSiteDataFetching {
 			if (downLink.contains("http") == false)
 				downLink = ("http://apk-dl.com").concat(downLink.trim());
 
-				// scraping downLink to get download link
-				Document doc1 = Jsoup.connect(downLink).userAgent("Chrome/47.0.2526.80").timeout(10000).get();
-				downUrl = doc1.getElementsByTag("p").select("a[href]").attr("href");
+			// scraping downLink to get download link
+			Document doc1 = Jsoup.connect(downLink).userAgent("Chrome/47.0.2526.80").timeout(10000).get();
+			downUrl = doc1.getElementsByTag("p").select("a[href]").attr("href");
 
-				if (downUrl != "") {
-					// adding "HTTP" to link if absent
-					if (downUrl.contains("http") == false) {
-						downUrl = ("http:").concat(downUrl);
-					}
-				} else {
-					// no download link present
-					downUrl = downUrl.replaceAll(downUrl, "No download Link or paid app");
+			if (downUrl != "") {
+				// adding "HTTP" to link if absent
+				if (downUrl.contains("http") == false) {
+					downUrl = ("http:").concat(downUrl);
 				}
+			} else {
+				// no download link present
+				downUrl = downUrl.replaceAll(downUrl, "No download Link or paid app");
+			}
 
 			// if no data fetched
 			if (title.equals("") && genre.equals("") && version.equals("") && size.equals("") && pDate.equals("")) {
@@ -126,27 +126,26 @@ public class ApkSiteDataFetching {
 		return apkSiteDetails;
 	}
 
-					// Creating JSON file of fetched info
-	public boolean createCsv(ArrayList<String> apkSiteDetails,String downloadFileName) 	
-	{
-			try {
+	// Creating JSON file of fetched info
+	public boolean createCsv(ArrayList<String> apkSiteDetails, String downloadFileName) {
+		try {
 			String title = apkSiteDetails.get(0);
 			String genre = apkSiteDetails.get(1);
 			String size = apkSiteDetails.get(2);
 			String version = apkSiteDetails.get(3);
 			String pDate = apkSiteDetails.get(4);
 			String downUrl = apkSiteDetails.get(5);
-			
-			boolean notFound=false;
-			
-			File file = new File(jsonInfo.getCsvDownloadFilePath()+"/"+downloadFileName);
-			
-			if(!file.exists())
-				notFound=true;
-			
+
+			boolean notFound = false;
+
+			File file = new File(jsonInfo.getCsvDownloadFilePath() + "/" + downloadFileName);
+
+			if (!file.exists())
+				notFound = true;
+
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
-			
+
 			// if file doesn't exists, then create it
 			if (notFound) {
 				file.createNewFile();
@@ -154,30 +153,27 @@ public class ApkSiteDataFetching {
 				bw.append("Apk Title,Genre,Size,Version,Publish Date,Download Link,");
 				bw.newLine();
 			}
-			if(apkSiteDetails.equals(null) || apkSiteDetails.equals("")){
-				bw.append("null,null,null,null,null,null,");
-			}else{
-				bw.append(title);
-				bw.append(",");
-				bw.append(genre);
-				bw.append(",");
-				bw.append(size);
-				bw.append(",");
-				bw.append(version);
-				bw.append(",");
-				bw.append(pDate);
-				bw.append(",");
-				bw.append(downUrl);
-				bw.append(",");
-				if (downUrl.contains("http://dl3.apk-dl.com/store/download?id")) {
-					System.out.println("inside if");
-					bw.append("Broken Link");
-				}
-				bw.newLine();
-				bw.close();
+			// appending data to CSV
+			bw.append(title);
+			bw.append(",");
+			bw.append(genre);
+			bw.append(",");
+			bw.append(size);
+			bw.append(",");
+			bw.append(version);
+			bw.append(",");
+			bw.append(pDate);
+			bw.append(",");
+			bw.append(downUrl);
+			bw.append(",");
+			if (downUrl.contains("http://dl3.apk-dl.com/store/download?id")) {
+				System.out.println("inside if");
+				bw.append("Broken Link");
 			}
-				System.out.println("Done");
-			
+			bw.newLine();
+			bw.close();
+			System.out.println(title+" Apk-dl data Stored in csv");
+			System.out.println("");
 		}
 
 		catch (Exception e) {

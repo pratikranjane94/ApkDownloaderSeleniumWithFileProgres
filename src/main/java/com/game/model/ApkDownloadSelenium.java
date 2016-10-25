@@ -85,7 +85,6 @@ public class ApkDownloadSelenium {
 			driver.get(chromeUrl);
 
 			// setting email id
-
 			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 			driver.findElement(By.id("inp-email")).sendKeys(username);
 			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
@@ -151,12 +150,10 @@ public class ApkDownloadSelenium {
 			WebElement element = driver.findElement(By.id("btn-logout"));
 			JavascriptExecutor executor = (JavascriptExecutor) driver;
 			executor.executeScript("arguments[0].click();", element);
-
-			System.out.println("clicked");
 			driver.switchTo().alert().accept();
 			driver.quit();
 		} catch (Exception e) {
-			System.out.println("exception in closing tab");
+			System.err.println("Exception in closing tab");
 
 		}
 
@@ -196,7 +193,7 @@ public class ApkDownloadSelenium {
 				try {
 					url = gname[6];
 				} catch (Exception e) {
-					System.out.println("unable to read url");
+					System.err.println("unable to read url");
 				}
 				// System.out.println("playstore url:"+url);
 				if (!url.equals(null))

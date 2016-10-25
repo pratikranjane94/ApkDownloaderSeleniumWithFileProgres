@@ -1,6 +1,7 @@
 /*File Name		: Client.java
  *Created By	: PRATIK RANJANE
- *Purpose		: Entry point of project, sends file to the server,download APK using SELENIUM and checks whether APK are download or not
+ *Purpose		: Entry point of project, sends file to the server,download APK using SELENIUM 
+ *				  and checks whether APK are download or not
  * */
 
 package com.game.Client;
@@ -8,7 +9,6 @@ package com.game.Client;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -44,8 +44,8 @@ public class Client {
 		ApkDownloadSelenium apkDownloadSelenium = new ApkDownloadSelenium();
 		IsDownloaded isDownloaded = new IsDownloaded();
 		JsonInfo jsonInfo = new JsonInfo();
-		PlayStoreDataFetching playStoreDataFetching=new PlayStoreDataFetching();
-		ApkSiteDataFetching apkSiteDataFetching=new ApkSiteDataFetching();
+		PlayStoreDataFetching playStoreDataFetching = new PlayStoreDataFetching();
+		ApkSiteDataFetching apkSiteDataFetching = new ApkSiteDataFetching();
 
 		JSONParser parser = new JSONParser();
 		Scanner scanner = new Scanner(System.in);
@@ -64,52 +64,40 @@ public class Client {
 		BufferedOutputStream bos;
 
 		String csvFilePath = "";
-		String downloadFilePath = "";
+
 		String propertyJsonPath = "";
 		String fileName;
 		String filePath;
-		
+
 		int size = 0;
 
 		System.out.println("Enter property.json file path:");
-		 propertyJsonPath = scanner.next();
+		propertyJsonPath = scanner.next();
 
-		try {
+		Object obj = parser.parse(new FileReader(propertyJsonPath));
 
-			Object obj = parser.parse(new FileReader(propertyJsonPath));
+		JSONObject jsonObject = (JSONObject) obj;
 
-			JSONObject jsonObject = (JSONObject) obj;
-
-			// getting properties from JSON
-			jsonInfo.setRestCall((String) jsonObject.get("restCall"));
-			jsonInfo.setChromeDriverPath((String) jsonObject.get("chromeDriverPath"));
-			jsonInfo.setCredentialsPath((String) jsonObject.get("credentialsPath"));
-			jsonInfo.setChromeExtensionPath((String) jsonObject.get("chromeExtensionPath"));
-			jsonInfo.setApkFileDownloadFolder((String) jsonObject.get("apkFileDownloadFolder"));
-			System.out.println("restCall:" + jsonInfo.getRestCall() + "\ndriver path:" + jsonInfo.getChromeDriverPath()
-					+ "\ncredentials path:" + jsonInfo.getCredentialsPath());
-			System.out.println("extension path:" + jsonInfo.getChromeExtensionPath() + "\ndownload folder"
-					+ jsonInfo.getApkFileDownloadFolder());
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		// getting properties from JSON
+		jsonInfo.setRestCall((String) jsonObject.get("restCall"));
+		jsonInfo.setChromeDriverPath((String) jsonObject.get("chromeDriverPath"));
+		jsonInfo.setCredentialsPath((String) jsonObject.get("credentialsPath"));
+		jsonInfo.setChromeExtensionPath((String) jsonObject.get("chromeExtensionPath"));
+		jsonInfo.setApkFileDownloadFolder((String) jsonObject.get("apkFileDownloadFolder") + "/");
+		jsonInfo.setCsvDownloadFilePath((String) jsonObject.get("csvDownloadFilePath"));
+		System.out.println("RestCall:" + jsonInfo.getRestCall() + "\nChrome driver path:"
+				+ jsonInfo.getChromeDriverPath() + "\nLogin Credentials path:" + jsonInfo.getCredentialsPath()
+				+ "\nChrome extension path:" + jsonInfo.getChromeExtensionPath() + "\nApk Download folder"
+				+ jsonInfo.getApkFileDownloadFolder());
 
 		System.out.println("Enter csv file path:");
-		 csvFilePath = scanner.next();
+		csvFilePath = scanner.next();
 
-		System.out.println("Enter path where you want to store the download file:");
-		 downloadFilePath = scanner.next();	
-		 
-		 jsonInfo.setCsvDownloadFilePath(downloadFilePath);
-		 
 		// passing properties from JSON to respective class
-			apkDownloadSelenium.setJsonInfo(jsonInfo);
-			isDownloaded.setJsonInfo(jsonInfo);
-			playStoreDataFetching.setJsonInfo(jsonInfo);
-			apkSiteDataFetching.setJsonInfo(jsonInfo);
-			
-		 
+		apkDownloadSelenium.setJsonInfo(jsonInfo);
+		isDownloaded.setJsonInfo(jsonInfo);
+		playStoreDataFetching.setJsonInfo(jsonInfo);
+		apkSiteDataFetching.setJsonInfo(jsonInfo);
 
 		// --------------- rest call to upload file-----------------
 
@@ -118,6 +106,7 @@ public class Client {
 		// calling REST
 		HttpPost httpPost = new HttpPost(jsonInfo.getRestCall());
 
+		// attaching file with request
 		file = new File(csvFilePath);
 		fileBody = new FileBody(file);
 
@@ -138,8 +127,8 @@ public class Client {
 		// reading file name from response
 
 		fileName = response.toString();
-		System.out.println("response filename:"+fileName);
-		if(jsonInfo.getRestCall().contains("localhost"))
+		System.out.println("response filename:" + fileName);
+		if (jsonInfo.getRestCall().contains("localhost"))
 			fileName = fileName.substring(fileName.indexOf("filename=") + 10, fileName.indexOf(", Content-Type") - 1);
 		else
 			fileName = fileName.substring(fileName.indexOf("filename=") + 10, fileName.indexOf(", Server:") - 1);
@@ -154,8 +143,8 @@ public class Client {
 		if (resEntity != null) {
 
 			bis = new BufferedInputStream(resEntity.getContent());
-			
-			filePath = downloadFilePath + "/" + fileName;
+
+			filePath = jsonInfo.getCsvDownloadFilePath() + "/" + fileName;
 
 			bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
 			int inByte;
@@ -172,8 +161,8 @@ public class Client {
 			// getting list of play store link by reading file
 			urlList = apkDownloadSelenium.readFile(filePath);
 
-			System.out.println("url list:"+urlList.toString());
-			
+			System.out.println("url list:" + urlList.toString());
+
 			// -------opening play store links using SELENIUM--------
 			size = urlList.size() / 5;
 			size = size * 5;
@@ -184,8 +173,12 @@ public class Client {
 				driverList.add(apkDownloadSelenium.downloadApkUsingSelenium(urlList.get(i)));
 
 				if (i % 5 == 4) {
-					System.out.println("checking after 5 k: " + 5 + " i: " + i);
-					isDownloaded.isDownloadCompleted(downloadFilePath, fileName, i);
+					// System.out.println("checking after 5 k: " + 5 + " i: " +
+					// i);
+					// checking download completed or not
+					isDownloaded.isDownloadCompleted(jsonInfo.getCsvDownloadFilePath(), fileName, i);
+
+					// closing all tabs
 					for (ChromeDriver driver : driverList) {
 						apkDownloadSelenium.closeTabs(driver);
 					}
@@ -193,17 +186,16 @@ public class Client {
 				}
 
 			}
+
 			if (urlList.size() != size) {
 				for (int j = size; j < urlList.size(); j++) {
-					System.out.println("last for loop started");
 					driverList.add(apkDownloadSelenium.downloadApkUsingSelenium(urlList.get(j)));
 				}
 				System.out.println("size:" + size + " Urlist size: " + urlList.size());
 				// checking download completed or not
-				isDownloaded.isDownloadCompleted(downloadFilePath, fileName, urlList.size());
+				isDownloaded.isDownloadCompleted(jsonInfo.getCsvDownloadFilePath(), fileName, urlList.size());
 			}
 			// closing all tabs
-
 			for (ChromeDriver driver : driverList) {
 				apkDownloadSelenium.closeTabs(driver);
 			}

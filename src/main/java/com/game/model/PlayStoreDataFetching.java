@@ -19,17 +19,16 @@ import org.jsoup.select.Elements;
 import com.game.dto.JsonInfo;
 
 public class PlayStoreDataFetching {
-	
+
 	private JsonInfo jsonInfo;
 
 	public void setJsonInfo(JsonInfo jsonInfo) {
 		this.jsonInfo = jsonInfo;
 	}
-	
-			/*-----------------------Scraping PlayStore site data---------------------------*/
 
-	public ArrayList<String> getPlayStoreData(String url)
-	{
+	/*-----------------------Scraping PlayStore site data---------------------------*/
+
+	public ArrayList<String> getPlayStoreData(String url) {
 
 		ArrayList<String> playStoreDetails = new ArrayList<String>();
 		// ArrayList<String> err=new ArrayList<String>();
@@ -53,32 +52,34 @@ public class PlayStoreDataFetching {
 			String version = info.select("[itemprop=softwareVersion]").text();
 			String size = info.select("[itemprop=fileSize]").text();
 			String pDate = info.select("[itemprop=datePublished]").text();
-			
-			/*--------------LOGO and is game JSOUP---------*/
-			/*			String[] cate=null;
-			boolean found = false;
-			String imageUrl=doc.getElementsByClass("cover-container").select("[itemprop=image]").attr("src");
-			if(!imageurl.contains("http"))
-				imageUrl=("http:").concat(imageUrl);
-			System.out.println("image url"+imageUrl);
-			String category=g.select("[class=document-subtitle category]").attr("href").toLowerCase();
-			System.out.println("Category:"+category);
-				if(category.contains("game"))
-					found=true;
-			System.out.println("cateogry link:"+category+" ,found :"+found);*/
-			/*---------------------end-----------------*/
-			
-			/*if version with varies find version from description
-			 * System.out.println("Checking:"+version.contains("Varies"));
-			  if(version.equals("") || version.contains("Varies")==true){
-					String newVer=doc.getElementsByClass("recent-change").text();
-					System.err.println("old new version:"+newVer);
-					newVer=newVer.substring(newVer.indexOf(".")-1, newVer.indexOf(".")+5).trim();
-					version = newVer.replaceAll("[,0-9.]", ""); 
-					System.out.println("new version:"+version);
-			}*/
 
-			//if no data fetched return null
+			/*--------------LOGO and is game JSOUP---------*/
+			/*
+			 * String[] cate=null; boolean found = false; String
+			 * imageUrl=doc.getElementsByClass("cover-container").select(
+			 * "[itemprop=image]").attr("src"); if(!imageurl.contains("http"))
+			 * imageUrl=("http:").concat(imageUrl); System.out.println(
+			 * "image url"+imageUrl); String category=g.select(
+			 * "[class=document-subtitle category]").attr("href").toLowerCase();
+			 * System.out.println("Category:"+category);
+			 * if(category.contains("game")) found=true; System.out.println(
+			 * "cateogry link:"+category+" ,found :"+found);
+			 */
+			/*---------------------end-----------------*/
+
+			/*
+			 * if version with varies find version from description
+			 * System.out.println("Checking:"+version.contains("Varies"));
+			 * if(version.equals("") || version.contains("Varies")==true){
+			 * String newVer=doc.getElementsByClass("recent-change").text();
+			 * System.err.println("old new version:"+newVer);
+			 * newVer=newVer.substring(newVer.indexOf(".")-1,
+			 * newVer.indexOf(".")+5).trim(); version =
+			 * newVer.replaceAll("[,0-9.]", ""); System.out.println(
+			 * "new version:"+version); }
+			 */
+
+			// if no data fetched return null
 			if (title.equals("") && genre.equals("") && version.equals("") && size.equals("") && pDate.equals("")
 					&& pack.equals("")) {
 				return null;
@@ -90,9 +91,9 @@ public class PlayStoreDataFetching {
 				playStoreDetails.add(pDate);
 				playStoreDetails.add(pack);
 				playStoreDetails.add(url);
-				
+
 				System.out.println("----------Play Store Data--------------");
-				
+
 				// showing game details
 				System.out.println("Title of Game: " + title);
 				System.out.println("Genre:" + genre);
@@ -100,17 +101,17 @@ public class PlayStoreDataFetching {
 				System.out.println("File Size: " + size);
 				System.out.println("Update date: " + pDate);
 				System.out.println("Package Name:" + pack);
-				System.out.println("URL:"+url);
+				System.out.println("Play Store URL:" + url);
 			}
 
 		} catch (UnknownHostException u) {
 			try {
-				Thread.sleep(1000);	//wait for a second
+				Thread.sleep(1000); // wait for a second
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			//if unknown host exception occurs call the same method again
-			PlayStoreDataFetching asdf = new PlayStoreDataFetching();	
+			// if unknown host exception occurs call the same method again
+			PlayStoreDataFetching asdf = new PlayStoreDataFetching();
 			asdf.getPlayStoreData(url);
 
 		}
@@ -122,8 +123,8 @@ public class PlayStoreDataFetching {
 		return playStoreDetails;
 	}
 
-	public boolean createCsv(ArrayList<String> playStoreDetails,String downloadFileName) // creating CSV file for play store data
-	{
+	// creating CSV file for play store data
+	public boolean createCsv(ArrayList<String> playStoreDetails, String downloadFileName) {
 		String title = playStoreDetails.get(0);
 		String genre = playStoreDetails.get(1);
 		String size = playStoreDetails.get(2);
@@ -131,17 +132,18 @@ public class PlayStoreDataFetching {
 		String pDate = playStoreDetails.get(4);
 		String pack = playStoreDetails.get(5);
 		String url = playStoreDetails.get(6);
-		boolean notFound=false;
+		boolean notFound = false;
 		try {
-			System.out.println("csv download file path:"+jsonInfo.getCsvDownloadFilePath());
-			File file = new File(jsonInfo.getCsvDownloadFilePath()+"/"+downloadFileName); //adding data to CSV
-			if(!file.exists())
-				notFound=true;
-			
+
+			// adding data to CSV
+			File file = new File(jsonInfo.getCsvDownloadFilePath() + "/" + downloadFileName);
+
+			if (!file.exists())
+				notFound = true;
+
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
-			System.out.println("file exists:"+file.exists());
-			
+
 			// if file doesn't exists, then create it
 			if (notFound) {
 				file.createNewFile();
@@ -150,13 +152,7 @@ public class PlayStoreDataFetching {
 				bw.newLine();
 			}
 
-			if(playStoreDetails.equals(null) || playStoreDetails.equals(""))
-			{
-				bw.append("null,null,null,null,null,null,");
-				bw.close();
-			}
-			else{
-			//adding data to file
+			// appending data to CSV
 			bw.append(title);
 			bw.append(",");
 			bw.append(genre);
@@ -172,8 +168,9 @@ public class PlayStoreDataFetching {
 			bw.append(url);
 			bw.append(",");
 			bw.close();
-			}
-			System.out.println("Done");
+
+			System.out.println(title+" Play store data Stored in csv");
+			System.out.println("");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -184,7 +181,7 @@ public class PlayStoreDataFetching {
 
 	// getting package name from PlayStore URL
 	public String getPackage(ArrayList<String> playStoreDetails) {
-		String pack = playStoreDetails.get(5); 							
+		String pack = playStoreDetails.get(5);
 		return pack;
 	}
 

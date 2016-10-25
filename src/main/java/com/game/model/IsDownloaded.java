@@ -64,7 +64,8 @@ public class IsDownloaded {
 	// reads the game name from file and checks whether it is download or not
 	public void isDownloadCompleted(String downloadFilePath, String fileName, int last)
 			throws IOException, InterruptedException {
-		System.out.println("file path:" + downloadFilePath);
+		
+		//System.out.println("file path:" + downloadFilePath);
 		FileReader st1 = new FileReader(downloadFilePath+"/"+ fileName);
 		BufferedReader st2 = new BufferedReader(st1);
 		ArrayList<String> data = new ArrayList<>();
@@ -72,7 +73,7 @@ public class IsDownloaded {
 		int loop = 0;
 		String folderName = fileName.replaceAll(".csv", "");
 
-		System.out.println("File Name:" + fileName);
+		//System.out.println("File Name:" + fileName);
 
 		String dowFileName;
 		int progress;
@@ -92,7 +93,7 @@ public class IsDownloaded {
 		if (loop % 5 == 0 && loop != 0)
 			loop = loop + 1;
 
-		System.out.println("Loop till:" + loop);
+		//System.out.println("Loop till:" + loop);
 
 		for (int j = 0; j < loop - 1; j++) {
 			st2.readLine();
@@ -139,10 +140,11 @@ public class IsDownloaded {
 				} else {
 					data = isFileDownloaded(dowFileName);
 
+					System.out.println("download file name:" + dowFileName);
+
 					//if file is currently downloading, keeps checking until downloading is completed
 					while (data.get(1) != "true") {
 						Thread.sleep(1000);
-						System.out.println("download file name:" + dowFileName);
 						data = isFileDownloaded(dowFileName);
 					}
 					System.out.println(dowFileName + " is downloded");
@@ -174,7 +176,7 @@ public class IsDownloaded {
 			} // end of for
 			
 			st2.close();
-			System.out.println("completed for loop");
+			//System.out.println("completed for loop");
 		}
 
 	}

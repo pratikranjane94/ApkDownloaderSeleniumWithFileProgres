@@ -74,7 +74,6 @@ public class GameNotFound {
 			bw.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("1");
 		}
 	}
 	
