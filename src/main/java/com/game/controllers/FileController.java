@@ -39,42 +39,44 @@ import com.game.model.PlayStoreUrlFetching;
 @RequestMapping("/controller")
 public class FileController {
 
-	// Class objects are created
-	PlayStoreUrlFetching purl = new PlayStoreUrlFetching();
-	PlayStoreDataFetching psdf = new PlayStoreDataFetching();
-	ApkSiteDataFetching asdf = new ApkSiteDataFetching();
-	GameNotFound gameNotFound = new GameNotFound();
-	ApkDownloadSelenium apkDownloadSelenium = new ApkDownloadSelenium();
-	FileMeta fileMeta = null;
-	MultipartFile mpf = null;
 
 	@Resource(name = "gameJsoupDao")
 	private GameJsoupDaoImp gameJsoupDao;
 
-	LinkedList<FileMeta> files = new LinkedList<FileMeta>();
-	ArrayList<String> playStoreDetails = new ArrayList<String>();
-	ArrayList<String> apkSiteDetails = new ArrayList<String>();
-	ArrayList<ChromeDriver> closeTabs = new ArrayList<>();
-
-	String url = ""; // Play Store URL
-	String line; // line read from file and stores game name
-	String temp = ""; // game name temporary
-	String fileSize; // size of uploaded file
-	String fileName; // name of uploaded file
-	String downloadFileName; // downloading name for file.
-	String fileNameID;
-	int progress = 0; // no of game's JSOUP completed
-	int count; // temporary stores total no of game in file
-	int id; // unique id for each uploaded file
-	int totoalGames = 0; // total games in file
-	boolean status = true; // status of APK-DL CSV created or not
-	boolean psStatus = true; // status of PlayStore CSV created or not
-
 	/*-------------------------------------------Creating JSOUP of Uploaded File-------------------------------------------*/
 
+	@SuppressWarnings("unused")
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public void upload(MultipartHttpServletRequest request, HttpServletResponse response)
 			throws IOException, InterruptedException {
+		
+		// Class objects are created
+		PlayStoreUrlFetching purl = new PlayStoreUrlFetching();
+		PlayStoreDataFetching psdf = new PlayStoreDataFetching();
+		ApkSiteDataFetching asdf = new ApkSiteDataFetching();
+		GameNotFound gameNotFound = new GameNotFound();
+		ApkDownloadSelenium apkDownloadSelenium = new ApkDownloadSelenium();
+		FileMeta fileMeta = null;
+		MultipartFile mpf = null;
+
+		LinkedList<FileMeta> files = new LinkedList<FileMeta>();
+		ArrayList<String> playStoreDetails = new ArrayList<String>();
+		ArrayList<String> apkSiteDetails = new ArrayList<String>();
+		ArrayList<ChromeDriver> closeTabs = new ArrayList<>();
+
+		String url = ""; // Play Store URL
+		String line; // line read from file and stores game name
+		String temp = ""; // game name temporary
+		String fileSize; // size of uploaded file
+		String fileName; // name of uploaded file
+		String downloadFileName; // downloading name for file.
+		String fileNameID = null;
+		int progress = 0; // no of game's JSOUP completed
+		int count = 0; // temporary stores total no of game in file
+		int id=0; // unique id for each uploaded file
+		int totoalGames = 0; // total games in file
+		boolean status = true; // status of APK-DL CSV created or not
+		boolean psStatus = true; // status of PlayStore CSV created or not
 
 		System.out.println("Ajax socket file controller");
 

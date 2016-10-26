@@ -108,7 +108,7 @@ public class ApkDownloadSelenium {
 			ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
 
 			// switches to new tab
-			driver.switchTo().window(tabs.get(1));
+			driver.switchTo().window(tabs.get(2));
 			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
 			// opening game's play store page
@@ -140,9 +140,6 @@ public class ApkDownloadSelenium {
 			driver.close();
 
 			driver.switchTo().window(tabs2.get(2));
-			driver.close();
-
-			driver.switchTo().window(tabs2.get(3));
 			driver.close();
 
 			driver.switchTo().window(tabs2.get(0));
