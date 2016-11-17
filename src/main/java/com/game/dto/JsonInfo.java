@@ -7,6 +7,8 @@ public class JsonInfo {
 	private String chromeExtensionPath;
 	private String apkFileDownloadFolder;
 	private String csvDownloadFilePath;
+	private String csvFilePath;
+	private String propertyJsonFilePath;
 
 	public String getRestCall() {
 		return restCall;
@@ -54,5 +56,21 @@ public class JsonInfo {
 
 	public void setCsvDownloadFilePath(String csvDownloadFilePath) {
 		this.csvDownloadFilePath = csvDownloadFilePath;
+	}
+
+	public String getCsvFilePath() {
+		return csvFilePath;
+	}
+
+	public void setCsvFilePath(String csvFilePath) {
+		this.csvFilePath = csvFilePath;
+	}
+
+	public String getPropertyJsonFilePath() {
+		return propertyJsonFilePath;
+	}
+
+	public void setPropertyJsonFilePath(String propertyJsonFilePath) {
+		this.propertyJsonFilePath = propertyJsonFilePath;
 	}
 }

@@ -24,7 +24,6 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.HttpClientBuilder;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -40,7 +39,6 @@ import com.game.model.PlayStoreDataFetching;
 public class Client {
 
 	public static void main(String[] args) throws InterruptedException, IOException, ParseException {
-
 		ApkDownloadSelenium apkDownloadSelenium = new ApkDownloadSelenium();
 		IsDownloaded isDownloaded = new IsDownloaded();
 		JsonInfo jsonInfo = new JsonInfo();

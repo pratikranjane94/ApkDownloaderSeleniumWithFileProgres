@@ -120,7 +120,6 @@ public class ApkSiteDataFetching {
 			ApkSiteDataFetching as = new ApkSiteDataFetching();
 			as.createApkSiteDetails(pack);
 		} catch (Exception e) {
-
 			return null;
 		}
 		return apkSiteDetails;

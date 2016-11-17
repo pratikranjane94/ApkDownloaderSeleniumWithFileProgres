@@ -10,7 +10,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.annotation.Resource;
@@ -21,9 +20,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.game.dao.GameJsoupDaoImp;
@@ -47,7 +46,7 @@ public class FileController {
 
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public void upload(MultipartHttpServletRequest request, HttpServletResponse response)
+	public void upload(@RequestParam("files") MultipartFile mpf, HttpServletResponse response)
 			throws IOException, InterruptedException {
 		
 		// Class objects are created
@@ -57,7 +56,6 @@ public class FileController {
 		GameNotFound gameNotFound = new GameNotFound();
 		ApkDownloadSelenium apkDownloadSelenium = new ApkDownloadSelenium();
 		FileMeta fileMeta = null;
-		MultipartFile mpf = null;
 
 		LinkedList<FileMeta> files = new LinkedList<FileMeta>();
 		ArrayList<String> playStoreDetails = new ArrayList<String>();
@@ -72,31 +70,19 @@ public class FileController {
 		String downloadFileName; // downloading name for file.
 		String fileNameID = null;
 		int progress = 0; // no of game's JSOUP completed
-		int count = 0; // temporary stores total no of game in file
+		int noOfLines = 0; // temporary stores total no of game in file
 		int id=0; // unique id for each uploaded file
-		int totoalGames = 0; // total games in file
+		int totalGames = 0; // total games in file
 		boolean status = true; // status of APK-DL CSV created or not
 		boolean psStatus = true; // status of PlayStore CSV created or not
 
 		System.out.println("Ajax socket file controller");
 
-		/*---------------iterator for getting file-------------*/
-
-		Iterator<String> itr = request.getFileNames();
-
-		// get each file
-		while (itr.hasNext()) {
-
-			// get uploaded MULTIPART file and its information
-			System.out.println("request " + request.getFileNames());
-			mpf = request.getFile(itr.next());
-			System.out.println("sdf");
+		// getting uploaded MULTIPART file and its information
 			System.out.println(mpf.getOriginalFilename() + " uploaded! ");
 
 			fileName = mpf.getOriginalFilename();
 			downloadFileName = mpf.getOriginalFilename().replace(".", "Download.");
-
-			/*---------------end of iterator for getting files-----------------*/
 
 			fileSize = mpf.getSize() / 1024 + " Kb";
 
@@ -108,7 +94,7 @@ public class FileController {
 
 			try {
 				fileMeta.setBytes(mpf.getBytes());
-				final InputStreamReader reader=new InputStreamReader(mpf.getInputStream());
+				InputStreamReader reader=new InputStreamReader(mpf.getInputStream());
 				InputStreamReader reader2=new InputStreamReader(mpf.getInputStream());
 				/*// copy uploaded file to local disk
 				FileCopyUtils.copy(mpf.getBytes(),
@@ -119,15 +105,15 @@ public class FileController {
 				BufferedReader brCount = new BufferedReader(reader);
 				
 				while (brCount.readLine() != null) {
-					count++;
+					noOfLines++;
 				}
-				totoalGames = count - 1;
+				totalGames = noOfLines - 1;
 
 				// reseting count to zero
-				count = 0;
+				noOfLines = 0;
 
-				fileMeta.setTotalGames(totoalGames);
-				System.out.println("totalGames:" + totoalGames);
+				fileMeta.setTotalGames(totalGames);
+				System.out.println("totalGames:" + totalGames);
 
 				//brCount.close();
 				// end of counting game
@@ -144,7 +130,7 @@ public class FileController {
 				} else {
 					line = br.readLine();
 
-					for (progress = 0; progress < totoalGames; progress++) {
+					for (progress = 0; progress < totalGames; progress++) {
 
 						fileMeta.setProgress(progress);
 
@@ -272,8 +258,6 @@ public class FileController {
 			//fileMeta.setDownBytes(FileUtils.readFileToByteArray(newDownloadfile));
 
 			System.out.println("-----------End Of Program-----------");
-
-		} // end of outside while
 
 		// end of first function
 

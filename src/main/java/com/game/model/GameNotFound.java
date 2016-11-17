@@ -20,6 +20,11 @@ public class GameNotFound {
 	public void addGameNotFoundInFile(String fileName,String temp,String downloadFileName)
 	{
 		try {
+			
+			File file=new File(filePath+"/"+fileName);
+			if(file.exists())
+				file.delete();
+			
 			//adding game name who's data is not fetched
 			File notFetched = new File(filePath+"/"+fileName+"StoreNotFetched.csv");
 			FileWriter fw = new FileWriter(notFetched.getAbsoluteFile(), true);

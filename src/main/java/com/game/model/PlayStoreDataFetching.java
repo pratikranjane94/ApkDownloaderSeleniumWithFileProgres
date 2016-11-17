@@ -134,9 +134,14 @@ public class PlayStoreDataFetching {
 		String url = playStoreDetails.get(6);
 		boolean notFound = false;
 		try {
-
 			// adding data to CSV
 			File file = new File(jsonInfo.getCsvDownloadFilePath() + "/" + downloadFileName);
+			File dir = new File(jsonInfo.getCsvDownloadFilePath());
+			
+			if (!dir.exists()) {
+				dir.mkdirs();
+				System.out.println("directory created");
+			}
 
 			if (!file.exists())
 				notFound = true;
@@ -169,7 +174,7 @@ public class PlayStoreDataFetching {
 			bw.append(",");
 			bw.close();
 
-			System.out.println(title+" Play store data Stored in csv");
+			System.out.println(title + " Play store data Stored in csv");
 			System.out.println("");
 		} catch (Exception e) {
 			e.printStackTrace();

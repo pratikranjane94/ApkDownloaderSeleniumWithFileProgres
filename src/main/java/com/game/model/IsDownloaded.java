@@ -112,7 +112,7 @@ public class IsDownloaded {
 					dowFileName = gname[5];
 					if (dowFileName.equals(null))
 						break;
-					System.out.println("Game name:" + dowFileName);
+					System.out.println("\n Game name:" + dowFileName);
 				} catch (Exception e) {
 					break;
 				}
@@ -140,7 +140,7 @@ public class IsDownloaded {
 				} else {
 					data = isFileDownloaded(dowFileName);
 
-					System.out.println("download file name:" + dowFileName);
+					System.out.println(dowFileName+" game is downloading");
 
 					//if file is currently downloading, keeps checking until downloading is completed
 					while (data.get(1) != "true") {
