@@ -8,7 +8,6 @@ package com.game.dto;
 public class FileMeta {
 
 	private String fileName;			//name of file uploaded
-	private String fileSize;			//size of file uploaded
 	private String fileType;			//type of file uploaded
 	private byte[] bytes;				//uploaded file is stored in bytes
 	private byte[] downBytes;			//JSOUP file is stored
@@ -33,12 +32,6 @@ public class FileMeta {
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
-	}
-	public String getFileSize() {
-		return fileSize;
-	}
-	public void setFileSize(String fileSize) {
-		this.fileSize = fileSize;
 	}
 	public String getFileType() {
 		return fileType;

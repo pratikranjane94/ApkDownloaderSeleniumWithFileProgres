@@ -54,7 +54,7 @@ public class ApkSiteDataFetching {
 			title = info.substring((info.indexOf("Name") + 4), (info.indexOf("Package Name") - 1)).trim();
 
 			// getting genre
-			String genre = info.substring((info.indexOf("Category") + 8), (info.indexOf("Developer Visit") - 1)).trim();
+			String genre = doc.getElementsByClass("category").text();
 
 			// getting version
 			String version = info.substring((info.indexOf("Version") + 7), (info.indexOf("Developer") - 1)).trim();
